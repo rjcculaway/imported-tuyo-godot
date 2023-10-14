@@ -1,0 +1,84 @@
+[gd_scene load_steps=12 format=3 uid="uid://b05so8o1vn4du"]
+
+[ext_resource type="Texture2D" uid="uid://dxegyn6sst2lh" path="res://assets/graphics/water.png" id="1_buwbu"]
+[ext_resource type="Texture2D" uid="uid://opuq7itya7rp" path="res://assets/graphics/jc.png" id="1_p58lb"]
+[ext_resource type="Texture2D" uid="uid://dgswdw4uwd1co" path="res://assets/graphics/mountains.png" id="2_ql21q"]
+[ext_resource type="Texture2D" uid="uid://bbcs3ley5xa4w" path="res://assets/graphics/shane.png" id="3_2x5up"]
+[ext_resource type="Texture2D" uid="uid://ck0i8cmlbuvtw" path="res://assets/graphics/boat.png" id="3_hmj6u"]
+[ext_resource type="Shader" path="res://shaders/fx/radial.gdshader" id="5_35psc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m5tbx"]
+shader = ExtResource("5_35psc")
+shader_parameter/offset = Vector2(0.635, 0.675)
+
+[sub_resource type="Gradient" id="Gradient_pyu26"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.393443, 0.980645)
+colors = PackedColorArray(0.984375, 0.996094, 0.894531, 1, 0.624416, 0.825113, 0.690764, 1, 0, 0.51, 0.68, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cbnm2"]
+gradient = SubResource("Gradient_pyu26")
+width = 1280
+height = 720
+
+[sub_resource type="Gradient" id="Gradient_8doje"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0.355469, 0.476563, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1fjjq"]
+gradient = SubResource("Gradient_8doje")
+width = 1280
+
+[node name="Main" type="Node"]
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SkyBackground" type="Sprite2D" parent="."]
+z_index = -1
+texture_filter = 2
+material = SubResource("ShaderMaterial_m5tbx")
+texture = SubResource("GradientTexture2D_cbnm2")
+centered = false
+
+[node name="JC" type="Sprite2D" parent="."]
+position = Vector2(660, 375)
+texture = ExtResource("1_p58lb")
+centered = false
+hframes = 4
+
+[node name="Shane" type="Sprite2D" parent="."]
+position = Vector2(843, 447)
+texture = ExtResource("3_2x5up")
+hframes = 4
+vframes = 2
+
+[node name="Mountains" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(0, 180)
+scale = Vector2(1, 1.5)
+texture = ExtResource("2_ql21q")
+centered = false
+
+[node name="Boat" type="Sprite2D" parent="."]
+position = Vector2(516, 444)
+texture = ExtResource("3_hmj6u")
+centered = false
+
+[node name="Water" type="Sprite2D" parent="."]
+position = Vector2(0, 309)
+texture = ExtResource("1_buwbu")
+centered = false
+hframes = 3
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Water"]
+
+[node name="Underwater" type="Sprite2D" parent="Water"]
+z_index = -1
+position = Vector2(0, 347)
+scale = Vector2(1, 64)
+texture = SubResource("GradientTexture1D_1fjjq")
+centered = false

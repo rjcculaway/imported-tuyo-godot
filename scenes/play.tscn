@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://kxcvawd2q83a"]
+
+[ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_3neud"]
+[ext_resource type="Script" path="res://scenes/UnderwaterBg.gd" id="2_ntqlg"]
+
+[sub_resource type="Gradient" id="Gradient_ax66c"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0.223529, 0.352941, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mtou2"]
+gradient = SubResource("Gradient_ax66c")
+width = 1280
+
+[node name="play" type="Node2D"]
+texture_repeat = 2
+
+[node name="BG" type="Sprite2D" parent="."]
+scale = Vector2(1, 720)
+texture = SubResource("GradientTexture1D_mtou2")
+centered = false
+
+[node name="UnderwaterBg" type="Sprite2D" parent="."]
+texture_repeat = 2
+texture = ExtResource("1_3neud")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1280, 720)
+script = ExtResource("2_ntqlg")
