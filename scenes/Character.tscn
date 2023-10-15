@@ -1,0 +1,132 @@
+[gd_scene load_steps=18 format=3 uid="uid://c0p32h8a6l2df"]
+
+[ext_resource type="Texture2D" uid="uid://bbcs3ley5xa4w" path="res://assets/graphics/shane.png" id="1_pyrrf"]
+[ext_resource type="Script" path="res://scenes/ShaneSprite.gd" id="2_343f5"]
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_inbvs"]
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_e4agt"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2lsb1"]
+animation = &"floating"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cvpr5"]
+animation = &"landing"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yqfbk"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m7c6y"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_d413b"]
+states/floating/node = SubResource("AnimationNodeAnimation_2lsb1")
+states/floating/position = Vector2(501, 100)
+states/landing/node = SubResource("AnimationNodeAnimation_cvpr5")
+states/landing/position = Vector2(344, 100)
+transitions = ["Start", "landing", SubResource("AnimationNodeStateMachineTransition_yqfbk"), "landing", "floating", SubResource("AnimationNodeStateMachineTransition_m7c6y")]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pnyhn"]
+animation = &"swimming"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u52rj"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_d1c04"]
+states/swimming/node = SubResource("AnimationNodeAnimation_pnyhn")
+states/swimming/position = Vector2(457, 100)
+transitions = ["Start", "swimming", SubResource("AnimationNodeStateMachineTransition_u52rj")]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_nfubd"]
+graph_offset = Vector2(-657, 49)
+nodes/Add2/node = SubResource("AnimationNodeAdd2_inbvs")
+nodes/Add2/position = Vector2(-200, 120)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_e4agt")
+nodes/TimeScale/position = Vector2(80, 140)
+nodes/movement/node = SubResource("AnimationNodeStateMachine_d413b")
+nodes/movement/position = Vector2(-500, 60)
+nodes/sprite_anim/node = SubResource("AnimationNodeStateMachine_d1c04")
+nodes/sprite_anim/position = Vector2(-500, 200)
+node_connections = [&"output", 0, &"TimeScale", &"Add2", 0, &"movement", &"Add2", 1, &"sprite_anim", &"TimeScale", 0, &"Add2"]
+
+[sub_resource type="Animation" id="Animation_bglmf"]
+resource_name = "floating"
+length = 3.0
+loop_mode = 1
+step = 0.125
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.125, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(64, 360), Vector2(64, 296), Vector2(64, 424)]
+}
+
+[sub_resource type="Animation" id="Animation_4qy0d"]
+resource_name = "landing"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.37893, 0.189465),
+"update": 0,
+"values": [Vector2(64, 0), Vector2(64, 360)]
+}
+
+[sub_resource type="Animation" id="Animation_aapim"]
+resource_name = "swimming"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(2, 1), Vector2i(1, 1), Vector2i(0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qwkfi"]
+_data = {
+"floating": SubResource("Animation_bglmf"),
+"landing": SubResource("Animation_4qy0d"),
+"swimming": SubResource("Animation_aapim")
+}
+
+[node name="Shane" type="Sprite2D" node_paths=PackedStringArray("animation_tree")]
+position = Vector2(64, 150.921)
+texture = ExtResource("1_pyrrf")
+centered = false
+offset = Vector2(0, -72)
+hframes = 4
+vframes = 2
+frame = 5
+script = ExtResource("2_343f5")
+animation_tree = NodePath("AnimationTree")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeBlendTree_nfubd")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/Add2/add_amount = 1.0
+parameters/TimeScale/scale = 0.25
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+speed_scale = 0.5
+libraries = {
+"": SubResource("AnimationLibrary_qwkfi")
+}

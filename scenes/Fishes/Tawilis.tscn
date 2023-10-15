@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfp6yoyl5j8h7"]
+
+[ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/Fishes/Fish.tscn" id="1_vhnt5"]
+[ext_resource type="Texture2D" uid="uid://c4bkf05832ok3" path="res://assets/graphics/tawilis.png" id="2_qpsyh"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_grddg"]
+radius = 18.0
+height = 112.0
+
+[node name="Goldfish" type="Node2D"]
+
+[node name="Fish" parent="." instance=ExtResource("1_vhnt5")]
+fish_size = 2
+base_point_value = 5
+fish_velocity = Vector2(-64, 0)
+sprite_speed = 0.5
+
+[node name="Sprite2D" parent="Fish" index="0"]
+texture = ExtResource("2_qpsyh")
+frame = 1
+
+[node name="CollisionShape2D" parent="Fish" index="1"]
+shape = SubResource("CapsuleShape2D_grddg")
+
+[editable path="Fish"]
