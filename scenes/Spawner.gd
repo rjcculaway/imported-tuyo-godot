@@ -2,6 +2,7 @@ extends Node2D
 
 @export var fish_types: Array[PackedScene]
 @export var spawning_line: Line2D
+@export var word_bank: Resource
 
 # # Called when the node enters the scene tree for the first time.
 func _ready():

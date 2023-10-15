@@ -40,7 +40,7 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 377.799)
+position = Vector2(64, 301.382)
 
 [node name="Spawner" type="Node2D" parent="." node_paths=PackedStringArray("spawning_line")]
 position = Vector2(1380, 0)
