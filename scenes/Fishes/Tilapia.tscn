@@ -15,6 +15,6 @@ sprite_speed = 0.25
 
 [node name="Sprite2D" parent="Fish" index="0"]
 texture = ExtResource("2_uk7h7")
-frame = 2
+frame = 3
 
 [editable path="Fish"]

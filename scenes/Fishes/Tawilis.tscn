@@ -19,7 +19,7 @@ sprite_speed = 0.5
 
 [node name="Sprite2D" parent="Fish" index="0"]
 texture = ExtResource("2_qpsyh")
-frame = 3
+frame = 1
 
 [node name="CollisionShape2D" parent="Fish" index="1"]
 shape = SubResource("CapsuleShape2D_grddg")

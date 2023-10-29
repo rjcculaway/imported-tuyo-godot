@@ -13,6 +13,6 @@ fish_velocity = Vector2(-64, 0)
 sprite_speed = 0.25
 
 [node name="Sprite2D" parent="Fish" index="0"]
-frame = 2
+frame = 0
 
 [editable path="Fish"]

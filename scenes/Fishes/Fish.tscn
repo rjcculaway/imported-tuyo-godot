@@ -62,6 +62,7 @@ texture = ExtResource("2_bw84a")
 hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_hb7pa")
 
@@ -78,21 +79,24 @@ libraries = {
 "": SubResource("AnimationLibrary_d7326")
 }
 
-[node name="FishWord" type="Label" parent="."]
+[node name="FishWord" type="RichTextLabel" parent="."]
 unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -36.0
-offset_top = -14.5
-offset_right = 12.0
-offset_bottom = 14.5
+offset_left = -12.0
+offset_top = -16.0
+offset_right = -12.0
+offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource("4_533qw")
 theme_type_variation = &"FishWord"
-text = "word"
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0

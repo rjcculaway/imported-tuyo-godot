@@ -1,6 +1,8 @@
 class_name Fish
 extends CharacterBody2D
 
+signal fish_caught(fish_size: FishSize, base_point_value: int)
+
 enum FishSize {
 		SMALL,
 		MEDIUM,
@@ -31,8 +33,32 @@ var word: String :
 func _ready():
 	$FishAnimationTree["parameters/TimeScale/scale"] = sprite_speed
 	velocity = fish_velocity
-	
 
 func _physics_process(_delta):
 	move_and_slide()
+	return
+
+func highlight_word(end: int):
+	var fish_word_label: RichTextLabel = $FishWord
+	fish_word_label.remove_paragraph(0)
+	fish_word_label.push_color(Color.YELLOW)
+	fish_word_label.append_text(word.substr(0, end))
+	fish_word_label.pop()
+	fish_word_label.append_text(word.substr(end, -1))
+
+func reset_text():
+	var fish_word_label: RichTextLabel = $FishWord
+	fish_word_label.remove_paragraph(0)
+	fish_word_label.append_text(word)
+
+func _on_current_word_changed(current_word: String):
+	if word == current_word:
+		fish_caught.emit(fish_size, base_point_value)
+		get_parent().queue_free()
+		return
+
+	if word.begins_with(current_word):
+		highlight_word(current_word.length())
+	else:
+		reset_text()
 	return
