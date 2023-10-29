@@ -5,14 +5,41 @@ script/source = "extends Resource
 class_name WordDictionary
 
 @export var short_words: PackedStringArray
+var short_words_used: PackedStringArray = []
 @export var medium_words: PackedStringArray
+var medium_words_used: PackedStringArray = []
 @export var long_words: PackedStringArray
+var long_words_used: PackedStringArray = []
 
 func _init(p_short_words = [], p_medium_words = [], p_long_words = []):
 	short_words = p_short_words
 	medium_words = p_medium_words
 	long_words = p_long_words
-	return"
+	return
+
+func get_word(word_list: PackedStringArray, word_list_used: PackedStringArray) -> String:
+	var selected_word_idx: int = randi() % word_list.size()
+	var selected_word: String = word_list[selected_word_idx]
+	word_list.remove_at(selected_word_idx)
+	word_list_used.push_back(selected_word)
+	
+	# Refill the words if empty.
+	if word_list.size() <= 0:
+		var temp = word_list
+		word_list = word_list_used
+		word_list_used = temp
+	
+	return selected_word
+
+func get_short_word() -> String:
+	return get_word(short_words, short_words_used)
+	
+func get_medium_word() -> String:
+	return get_word(medium_words, medium_words_used)
+	
+func get_long_words() -> String:
+	return get_word(long_words, long_words_used)
+"
 
 [resource]
 script = SubResource("GDScript_t1wby")

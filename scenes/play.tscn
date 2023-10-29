@@ -1,13 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://kxcvawd2q83a"]
+[gd_scene load_steps=13 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
+[ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
 [ext_resource type="Script" path="res://scenes/UnderwaterBg.gd" id="2_yfhgu"]
 [ext_resource type="PackedScene" uid="uid://c0p32h8a6l2df" path="res://scenes/Character.tscn" id="3_ts3qv"]
 [ext_resource type="Script" path="res://scenes/Spawner.gd" id="4_bf7dc"]
 [ext_resource type="Script" path="res://scenes/SpawnTimer.gd" id="5_0qupf"]
-[ext_resource type="PackedScene" uid="uid://bdovpdtdf55gc" path="res://scenes/Fishes/Goldfish.tscn" id="5_sjcb2"]
-[ext_resource type="PackedScene" uid="uid://bun5y18j58rjo" path="res://scenes/Fishes/Tilapia.tscn" id="6_8hack"]
-[ext_resource type="PackedScene" uid="uid://cfp6yoyl5j8h7" path="res://scenes/Fishes/Tawilis.tscn" id="7_dht81"]
+[ext_resource type="Resource" uid="uid://bi880134s35b8" path="res://assets/game_parameters/spawning_pattern.tres" id="9_3k05j"]
+[ext_resource type="Resource" uid="uid://bd25kk3mx2rnd" path="res://assets/words/word_bank.tres" id="10_lst0b"]
+[ext_resource type="Script" path="res://scenes/FishDespawnArea.gd" id="12_14qre"]
 
 [sub_resource type="Gradient" id="Gradient_ax66c"]
 interpolation_mode = 1
@@ -24,6 +25,7 @@ b = Vector2(-128, 720)
 
 [node name="Play" type="Node2D"]
 texture_repeat = 2
+script = ExtResource("1_nchbe")
 
 [node name="BG" type="Sprite2D" parent="."]
 scale = Vector2(1, 720)
@@ -40,13 +42,14 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 301.382)
+position = Vector2(64, 295.922)
 
 [node name="Spawner" type="Node2D" parent="." node_paths=PackedStringArray("spawning_line")]
 position = Vector2(1380, 0)
 script = ExtResource("4_bf7dc")
-fish_types = Array[PackedScene]([ExtResource("5_sjcb2"), ExtResource("6_8hack"), ExtResource("7_dht81")])
+spawning_patterns = Array[Resource]([ExtResource("9_3k05j")])
 spawning_line = NodePath("SpawningLine")
+word_bank = ExtResource("10_lst0b")
 
 [node name="SpawningLine" type="Line2D" parent="Spawner"]
 points = PackedVector2Array(0, 0, 0, 720)
@@ -58,10 +61,12 @@ wait_time = 5.0
 autostart = true
 script = ExtResource("5_0qupf")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="FishDespawnArea" type="Area2D" parent="."]
+script = ExtResource("12_14qre")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FishDespawnArea"]
 shape = SubResource("SegmentShape2D_o50xx")
 one_way_collision_margin = 0.0
 
 [connection signal="timeout" from="Spawner/SpawnTimer" to="Spawner" method="_on_spawn_timer_timeout"]
+[connection signal="body_exited" from="FishDespawnArea" to="FishDespawnArea" method="_on_body_exited"]

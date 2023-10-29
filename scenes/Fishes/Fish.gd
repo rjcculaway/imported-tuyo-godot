@@ -18,6 +18,13 @@ enum FishSize {
 	get:
 		return sprite_speed
 
+var word: String :
+	set (value):
+		word = value
+		$FishWord.text = word;
+	get:
+		return word
+
 # @onready var sprite_time_scale: Dictionary = animation_tree.set()
 
 # Called when the node enters the scene tree for the first time.
@@ -28,4 +35,4 @@ func _ready():
 
 func _physics_process(_delta):
 	move_and_slide()
-	return	
+	return

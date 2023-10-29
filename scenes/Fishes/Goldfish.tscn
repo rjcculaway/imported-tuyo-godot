@@ -1,15 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://bdovpdtdf55gc"]
+[gd_scene load_steps=3 format=3 uid="uid://bdovpdtdf55gc"]
 
+[ext_resource type="Script" path="res://scenes/Fishes/Goldfish.gd" id="1_78amp"]
 [ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/Fishes/Fish.tscn" id="1_m88vf"]
 
-[node name="Goldfish" type="Node2D"]
+[node name="Goldfish" type="Node2D" groups=["fishes"]]
+script = ExtResource("1_78amp")
 
 [node name="Fish" parent="." instance=ExtResource("1_m88vf")]
+unique_name_in_owner = true
 base_point_value = 1
 fish_velocity = Vector2(-64, 0)
 sprite_speed = 0.25
 
 [node name="Sprite2D" parent="Fish" index="0"]
-frame = 1
+frame = 2
 
 [editable path="Fish"]

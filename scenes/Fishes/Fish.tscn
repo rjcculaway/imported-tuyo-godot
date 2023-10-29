@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://dnq2f567si8mc"]
+[gd_scene load_steps=13 format=3 uid="uid://dnq2f567si8mc"]
 
 [ext_resource type="Script" path="res://scenes/Fishes/Fish.gd" id="1_mgkdx"]
 [ext_resource type="Texture2D" uid="uid://cib4ske3c2inj" path="res://assets/graphics/goldfish.png" id="2_bw84a"]
 [ext_resource type="Script" path="res://scenes/Fishes/FishAnimationTree.gd" id="3_x0f0n"]
+[ext_resource type="Theme" uid="uid://beone4616rq8g" path="res://assets/themes/theme.tres" id="4_533qw"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hb7pa"]
 radius = 28.0
@@ -76,3 +77,22 @@ script = ExtResource("3_x0f0n")
 libraries = {
 "": SubResource("AnimationLibrary_d7326")
 }
+
+[node name="FishWord" type="Label" parent="."]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.0
+offset_top = -14.5
+offset_right = 12.0
+offset_bottom = 14.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_533qw")
+theme_type_variation = &"FishWord"
+text = "word"
+horizontal_alignment = 1
+vertical_alignment = 1
