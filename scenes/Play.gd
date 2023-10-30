@@ -2,8 +2,17 @@ extends Node2D
 class_name Play
 
 signal current_typed_word_changed(current_word: String)
+signal depth_changed(depth: int)
+signal score_changed(score: int)
 
-var score: int = 0
+var score: int = 0 :
+	set(new_score):
+		score_changed.emit(new_score)
+		score = new_score
+var depth: int = 0 :
+	set(new_depth):
+		depth_changed.emit(new_depth)
+		depth = new_depth
 
 var current_typed_word: String = "" :
 	set(updated_word):
@@ -37,4 +46,6 @@ func _on_fish_caught(fish_size: Fish.FishSize, base_point_value: int):
 	print_debug("Fish (%s) was caught for %d point(s)." % [str(fish_size), base_point_value])
 	return
 
-	
+func _on_depth_increase_timer_timeout():
+	depth += 1
+	$DepthIncreaseTimer.wait_time = max($DepthIncreaseTimer.wait_time - 0.5, 0.5)

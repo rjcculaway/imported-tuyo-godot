@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://kxcvawd2q83a"]
+[gd_scene load_steps=16 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
 [ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
@@ -7,8 +7,11 @@
 [ext_resource type="Script" path="res://scenes/Spawner.gd" id="4_bf7dc"]
 [ext_resource type="Script" path="res://scenes/SpawnTimer.gd" id="5_0qupf"]
 [ext_resource type="Resource" uid="uid://bi880134s35b8" path="res://assets/game_parameters/spawning_pattern.tres" id="9_3k05j"]
+[ext_resource type="Theme" uid="uid://beone4616rq8g" path="res://assets/themes/theme.tres" id="10_6mt2a"]
 [ext_resource type="Resource" uid="uid://bd25kk3mx2rnd" path="res://assets/words/word_bank.tres" id="10_lst0b"]
+[ext_resource type="Script" path="res://scenes/MainGame/DepthValueLabel.gd" id="11_4uihv"]
 [ext_resource type="Script" path="res://scenes/FishDespawnArea.gd" id="12_14qre"]
+[ext_resource type="Script" path="res://scenes/MainGame/ScoreValueLabel.gd" id="12_t5unn"]
 
 [sub_resource type="Gradient" id="Gradient_ax66c"]
 interpolation_mode = 1
@@ -42,7 +45,8 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 331.73)
+position = Vector2(64, 328.739)
+frame = 4
 
 [node name="Spawner" type="Node2D" parent="." node_paths=PackedStringArray("spawning_line")]
 position = Vector2(1380, 0)
@@ -71,5 +75,59 @@ script = ExtResource("12_14qre")
 shape = SubResource("SegmentShape2D_o50xx")
 one_way_collision_margin = 0.0
 
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameInformationContainer" type="VBoxContainer" parent="HUD"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 161.0
+offset_bottom = 104.0
+
+[node name="PlayerDepthContainer" type="HBoxContainer" parent="HUD/GameInformationContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 32
+
+[node name="DepthLabel" type="Label" parent="HUD/GameInformationContainer/PlayerDepthContainer"]
+layout_mode = 2
+theme = ExtResource("10_6mt2a")
+text = "Depth"
+
+[node name="DepthValueLabel" type="Label" parent="HUD/GameInformationContainer/PlayerDepthContainer"]
+layout_mode = 2
+theme = ExtResource("10_6mt2a")
+text = "0"
+script = ExtResource("11_4uihv")
+
+[node name="PlayerScoreContainer" type="HBoxContainer" parent="HUD/GameInformationContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 29
+
+[node name="ScoreLabel" type="Label" parent="HUD/GameInformationContainer/PlayerScoreContainer"]
+layout_mode = 2
+theme = ExtResource("10_6mt2a")
+text = "Score"
+
+[node name="ScoreValueLabel" type="Label" parent="HUD/GameInformationContainer/PlayerScoreContainer"]
+layout_mode = 2
+theme = ExtResource("10_6mt2a")
+text = "0"
+script = ExtResource("12_t5unn")
+
+[node name="DepthIncreaseTimer" type="Timer" parent="."]
+wait_time = 15.0
+autostart = true
+
+[connection signal="depth_changed" from="." to="HUD/GameInformationContainer/PlayerDepthContainer/DepthValueLabel" method="_on_depth_changed"]
+[connection signal="score_changed" from="." to="HUD/GameInformationContainer/PlayerScoreContainer/ScoreValueLabel" method="_on_score_changed"]
 [connection signal="timeout" from="Spawner/SpawnTimer" to="Spawner" method="_on_spawn_timer_timeout"]
 [connection signal="body_exited" from="FishDespawnArea" to="FishDespawnArea" method="_on_body_exited"]
+[connection signal="timeout" from="DepthIncreaseTimer" to="." method="_on_depth_increase_timer_timeout"]

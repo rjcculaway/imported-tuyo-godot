@@ -29,5 +29,5 @@ func spawn_fishes() -> void:
 	return
 
 func _on_spawn_timer_timeout():
-	# spawn_fishes()
+	spawn_fishes()
 	return

@@ -6,3 +6,5 @@
 FishWord/base_type = &"RichTextLabel"
 FishWord/font_sizes/normal_font_size = 32
 FishWord/fonts/normal_font = ExtResource("1_f03vb")
+Label/font_sizes/font_size = 48
+Label/fonts/font = ExtResource("1_f03vb")

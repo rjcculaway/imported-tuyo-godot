@@ -108,13 +108,13 @@ _data = {
 }
 
 [node name="Shane" type="Sprite2D" node_paths=PackedStringArray("animation_tree")]
-position = Vector2(64, 339.153)
+position = Vector2(64, 322.55)
 texture = ExtResource("1_pyrrf")
 centered = false
 offset = Vector2(0, -72)
 hframes = 4
 vframes = 2
-frame = 6
+frame = 7
 script = ExtResource("2_343f5")
 animation_tree = NodePath("AnimationTree")
 
