@@ -11,7 +11,11 @@ enum FishSize {
 
 @export var fish_size: FishSize
 @export var base_point_value: int
+
+@export var min_velocity_multiplier: float = 1.0
+@export var max_velocity_multiplier: float = 1.0
 @export var fish_velocity: Vector2
+
 @export var sprite_speed: float :
 	set (value):
 		if (is_node_ready()):
@@ -27,12 +31,10 @@ var word: String :
 	get:
 		return word
 
-# @onready var sprite_time_scale: Dictionary = animation_tree.set()
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$FishAnimationTree["parameters/TimeScale/scale"] = sprite_speed
-	velocity = fish_velocity
+	velocity = fish_velocity * randf_range(min_velocity_multiplier, max_velocity_multiplier)
 
 func _physics_process(_delta):
 	move_and_slide()

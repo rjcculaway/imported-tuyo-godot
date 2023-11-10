@@ -37,7 +37,7 @@ func get_short_word() -> String:
 func get_medium_word() -> String:
 	return get_word(medium_words, medium_words_used)
 	
-func get_long_words() -> String:
+func get_long_word() -> String:
 	return get_word(long_words, long_words_used)
 "
 

@@ -2,9 +2,17 @@ extends Node2D
 class_name Play
 
 signal current_typed_word_changed(current_word: String)
+signal lives_changed(lives: int)
 signal depth_changed(depth: int)
 signal score_changed(score: int)
 
+@export var max_lives = 3
+
+var lives: int = 0 :
+	set(new_lives):
+		var clamped_new_lives = max(new_lives, 0)
+		lives_changed.emit(clamped_new_lives)
+		lives = clamped_new_lives
 var score: int = 0 :
 	set(new_score):
 		score_changed.emit(new_score)
@@ -21,7 +29,7 @@ var current_typed_word: String = "" :
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	lives = max_lives
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -49,3 +57,12 @@ func _on_fish_caught(fish_size: Fish.FishSize, base_point_value: int):
 func _on_depth_increase_timer_timeout():
 	depth += 1
 	$DepthIncreaseTimer.wait_time = max($DepthIncreaseTimer.wait_time - 0.5, 0.5)
+
+func _on_fish_escaped():
+	print_debug("Fish escaped!")
+	lives -= 1
+
+func _on_lives_changed(new_lives: int):
+	var all_lives_lost = new_lives <= 0
+	if all_lives_lost:
+		get_tree().paused = true

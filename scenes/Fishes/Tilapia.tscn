@@ -8,8 +8,11 @@
 script = ExtResource("1_tsq4h")
 
 [node name="Fish" parent="." instance=ExtResource("1_otx72")]
+unique_name_in_owner = true
 fish_size = 1
 base_point_value = 3
+min_velocity_multiplier = 1.25
+max_velocity_multiplier = 1.5
 fish_velocity = Vector2(-64, 0)
 sprite_speed = 0.25
 

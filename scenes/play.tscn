@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://kxcvawd2q83a"]
+[gd_scene load_steps=27 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
 [ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
@@ -6,12 +6,23 @@
 [ext_resource type="PackedScene" uid="uid://c0p32h8a6l2df" path="res://scenes/Character.tscn" id="3_ts3qv"]
 [ext_resource type="Script" path="res://scenes/Spawner.gd" id="4_bf7dc"]
 [ext_resource type="Script" path="res://scenes/SpawnTimer.gd" id="5_0qupf"]
-[ext_resource type="Resource" uid="uid://bi880134s35b8" path="res://assets/game_parameters/spawning_pattern.tres" id="9_3k05j"]
+[ext_resource type="Resource" uid="uid://bi880134s35b8" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_001.tres" id="6_3u7q4"]
+[ext_resource type="Resource" uid="uid://d0mcusxlvyitg" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_002.tres" id="7_nx0p3"]
+[ext_resource type="Resource" uid="uid://cy6pke3gr3qf0" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_003.tres" id="8_0m0bg"]
+[ext_resource type="Resource" uid="uid://lu7h6l4nv3fy" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_004.tres" id="9_i2f4r"]
 [ext_resource type="Theme" uid="uid://beone4616rq8g" path="res://assets/themes/theme.tres" id="10_6mt2a"]
+[ext_resource type="Resource" uid="uid://cyebno6hndi5r" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_005.tres" id="10_itmq8"]
 [ext_resource type="Resource" uid="uid://bd25kk3mx2rnd" path="res://assets/words/word_bank.tres" id="10_lst0b"]
 [ext_resource type="Script" path="res://scenes/MainGame/DepthValueLabel.gd" id="11_4uihv"]
+[ext_resource type="Resource" uid="uid://bo8fi356w1bfr" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_006.tres" id="11_rkp8w"]
 [ext_resource type="Script" path="res://scenes/FishDespawnArea.gd" id="12_14qre"]
 [ext_resource type="Script" path="res://scenes/MainGame/ScoreValueLabel.gd" id="12_t5unn"]
+[ext_resource type="Resource" uid="uid://bs22btlu4xoy8" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_007.tres" id="12_tbx04"]
+[ext_resource type="Script" path="res://scenes/MainGame/LivesDisplay.gd" id="13_3does"]
+[ext_resource type="Resource" uid="uid://d2s04f5cdm4pc" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_008.tres" id="13_6of11"]
+[ext_resource type="Resource" uid="uid://lxswfqokbw82" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_009.tres" id="14_14l6s"]
+[ext_resource type="PackedScene" uid="uid://b83cjkh7fkgir" path="res://assets/ui/LifeIcon.tscn" id="14_lpprb"]
+[ext_resource type="Resource" uid="uid://bib5bx6lhpwp0" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_010.tres" id="15_4x446"]
 
 [sub_resource type="Gradient" id="Gradient_ax66c"]
 interpolation_mode = 1
@@ -23,8 +34,7 @@ gradient = SubResource("Gradient_ax66c")
 width = 1280
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_o50xx"]
-a = Vector2(-128, 0)
-b = Vector2(-128, 720)
+b = Vector2(0, 720)
 
 [node name="Play" type="Node2D"]
 texture_repeat = 2
@@ -45,13 +55,13 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 328.739)
-frame = 4
+position = Vector2(64, 310.666)
+frame = 6
 
 [node name="Spawner" type="Node2D" parent="." node_paths=PackedStringArray("spawning_line")]
 position = Vector2(1380, 0)
 script = ExtResource("4_bf7dc")
-spawning_patterns = Array[Resource]([ExtResource("9_3k05j")])
+spawning_patterns = Array[Resource]([ExtResource("6_3u7q4"), ExtResource("7_nx0p3"), ExtResource("8_0m0bg"), ExtResource("9_i2f4r"), ExtResource("10_itmq8"), ExtResource("11_rkp8w"), ExtResource("12_tbx04"), ExtResource("13_6of11"), ExtResource("14_14l6s"), ExtResource("15_4x446")])
 spawning_line = NodePath("SpawningLine")
 word_bank = ExtResource("10_lst0b")
 
@@ -77,11 +87,9 @@ one_way_collision_margin = 0.0
 
 [node name="HUD" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
 
 [node name="GameInformationContainer" type="VBoxContainer" parent="HUD"]
 layout_mode = 0
@@ -122,12 +130,39 @@ theme = ExtResource("10_6mt2a")
 text = "0"
 script = ExtResource("12_t5unn")
 
+[node name="Lives" type="HBoxContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_top = 20.0
+offset_right = -16.0
+offset_bottom = 68.0
+grow_horizontal = 0
+theme_override_constants/separation = -16
+script = ExtResource("13_3does")
+HeartIcon = ExtResource("14_lpprb")
+
+[node name="LifeIcon" parent="HUD/Lives" instance=ExtResource("14_lpprb")]
+layout_mode = 2
+
+[node name="LifeIcon2" parent="HUD/Lives" instance=ExtResource("14_lpprb")]
+layout_mode = 2
+
+[node name="LifeIcon3" parent="HUD/Lives" instance=ExtResource("14_lpprb")]
+layout_mode = 2
+
 [node name="DepthIncreaseTimer" type="Timer" parent="."]
+unique_name_in_owner = true
 wait_time = 15.0
 autostart = true
 
 [connection signal="depth_changed" from="." to="HUD/GameInformationContainer/PlayerDepthContainer/DepthValueLabel" method="_on_depth_changed"]
+[connection signal="lives_changed" from="." to="." method="_on_lives_changed"]
+[connection signal="lives_changed" from="." to="HUD/Lives" method="_on_play_lives_changed"]
 [connection signal="score_changed" from="." to="HUD/GameInformationContainer/PlayerScoreContainer/ScoreValueLabel" method="_on_score_changed"]
 [connection signal="timeout" from="Spawner/SpawnTimer" to="Spawner" method="_on_spawn_timer_timeout"]
 [connection signal="body_exited" from="FishDespawnArea" to="FishDespawnArea" method="_on_body_exited"]
+[connection signal="fish_escaped" from="FishDespawnArea" to="." method="_on_fish_escaped"]
 [connection signal="timeout" from="DepthIncreaseTimer" to="." method="_on_depth_increase_timer_timeout"]

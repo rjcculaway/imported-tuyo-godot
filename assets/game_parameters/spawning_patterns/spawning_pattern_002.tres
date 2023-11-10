@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SpawningPattern" load_steps=3 format=3 uid="uid://d0mcusxlvyitg"]
+
+[ext_resource type="PackedScene" uid="uid://bdovpdtdf55gc" path="res://scenes/Fishes/Goldfish.tscn" id="1_ecijl"]
+
+[sub_resource type="GDScript" id="GDScript_1gxxj"]
+script/source = "extends Resource
+class_name SpawningPattern
+
+@export var fish_types: Array[PackedScene]
+
+func _init(p_fish_types = [] as Array[PackedScene]):
+	fish_types = p_fish_types
+	return
+"
+
+[resource]
+script = SubResource("GDScript_1gxxj")
+fish_types = Array[PackedScene]([ExtResource("1_ecijl"), ExtResource("1_ecijl"), ExtResource("1_ecijl")])

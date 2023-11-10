@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SpawningPattern" load_steps=3 format=3 uid="uid://lxswfqokbw82"]
+
+[ext_resource type="PackedScene" uid="uid://cfp6yoyl5j8h7" path="res://scenes/Fishes/Tawilis.tscn" id="2_gau77"]
+
+[sub_resource type="GDScript" id="GDScript_1gxxj"]
+script/source = "extends Resource
+class_name SpawningPattern
+
+@export var fish_types: Array[PackedScene]
+
+func _init(p_fish_types = [] as Array[PackedScene]):
+	fish_types = p_fish_types
+	return
+"
+
+[resource]
+script = SubResource("GDScript_1gxxj")
+fish_types = Array[PackedScene]([ExtResource("2_gau77"), ExtResource("2_gau77"), ExtResource("2_gau77"), ExtResource("2_gau77"), ExtResource("2_gau77")])

@@ -14,10 +14,14 @@ func _ready():
 # 	pass
 
 func spawn_fishes() -> void:
-	var spawning_pattern: Resource = spawning_patterns[0]
+	var parent: Play = get_parent()
+	var depth: int = parent.depth
+
+	var range_of_spawning_patterns: int = clamp(log(depth), 0, spawning_patterns.size() - 1) 
+
+	var spawning_pattern: Resource = spawning_patterns[randi() % (range_of_spawning_patterns)]
 	var num_of_fishes: int = spawning_pattern.fish_types.size()
 	for i in range(num_of_fishes):
-		var parent: Play = get_parent()
 		var new_fish: Node2D = spawning_pattern.fish_types[i].instantiate()
 		var fish_component: Fish = new_fish.get_node("Fish")
 		new_fish.position.y = lerp(spawning_line.points[0].y, spawning_line.points[1].y, 1.0 / (num_of_fishes + 1) * (i + 1.0)) # Evenly divide the spawning points along the vertical axis.
