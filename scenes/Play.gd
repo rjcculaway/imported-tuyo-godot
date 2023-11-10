@@ -5,6 +5,7 @@ signal current_typed_word_changed(current_word: String)
 signal lives_changed(lives: int)
 signal depth_changed(depth: int)
 signal score_changed(score: int)
+signal game_over()
 
 @export var max_lives = 3
 
@@ -65,4 +66,63 @@ func _on_fish_escaped():
 func _on_lives_changed(new_lives: int):
 	var all_lives_lost = new_lives <= 0
 	if all_lives_lost:
-		get_tree().paused = true
+		game_over.emit()
+
+func load_high_scores() -> Array[Dictionary]:
+	var save_game = FileAccess.open("user://high_scores.dat", FileAccess.READ)
+
+	if FileAccess.get_open_error() != OK:
+		return [] as Array[Dictionary]
+
+	var high_scores: Array[Dictionary] = []
+
+
+	while save_game.get_position() < save_game.get_length():
+		var player_name: String = save_game.get_pascal_string()
+		var player_score: int = save_game.get_64()
+
+		high_scores.append({
+			"player_name": player_name,
+			"player_score": player_score
+		})
+	
+	print_debug(high_scores)
+	
+	return high_scores
+
+func save_high_scores() -> void:
+	var high_scores = load_high_scores()
+
+	high_scores.append({
+		"player_name": "Player",
+		"player_score": score
+	})
+
+	var high_score_comparator: Callable = func (a: Dictionary, b: Dictionary):
+		return a["player_score"] > b["player_score"]
+	
+	high_scores.sort_custom(high_score_comparator)
+	if high_scores.size() > 10:
+		high_scores.resize(high_scores.size() - 1)	# Removes the last high score
+
+	if FileAccess.file_exists("user://high_scores.dat"):
+		var save_game_rename = DirAccess.rename_absolute("user://high_scores.dat", "user://high_scores.dat.bak")
+
+		if save_game_rename != OK:
+			print_debug("Creating backup file for saves failed. Stopping save.")
+			return
+	
+	var save_file = FileAccess.open("user://high_scores.dat", FileAccess.WRITE)
+	if FileAccess.get_open_error() != OK:
+		print_debug("Save file creation failed. Stopping save.")
+		DirAccess.rename_absolute("user://high_scores.dat.bak", "user://high_scores.dat")
+		return
+
+	for i in range(len(high_scores)):
+		save_file.store_pascal_string(high_scores[i]["player_name"])
+		save_file.store_64((high_scores[i]["player_score"]))
+
+func _on_game_over():
+	save_high_scores()
+	get_tree().paused = true
+	pass

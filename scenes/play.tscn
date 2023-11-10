@@ -55,8 +55,8 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 310.666)
-frame = 6
+position = Vector2(64, 395.273)
+frame = 5
 
 [node name="Spawner" type="Node2D" parent="." node_paths=PackedStringArray("spawning_line")]
 position = Vector2(1380, 0)
@@ -159,6 +159,7 @@ wait_time = 15.0
 autostart = true
 
 [connection signal="depth_changed" from="." to="HUD/GameInformationContainer/PlayerDepthContainer/DepthValueLabel" method="_on_depth_changed"]
+[connection signal="game_over" from="." to="." method="_on_game_over"]
 [connection signal="lives_changed" from="." to="." method="_on_lives_changed"]
 [connection signal="lives_changed" from="." to="HUD/Lives" method="_on_play_lives_changed"]
 [connection signal="score_changed" from="." to="HUD/GameInformationContainer/PlayerScoreContainer/ScoreValueLabel" method="_on_score_changed"]
