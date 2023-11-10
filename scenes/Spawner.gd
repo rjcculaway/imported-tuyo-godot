@@ -17,7 +17,7 @@ func spawn_fishes() -> void:
 	var parent: Play = get_parent()
 	var depth: int = parent.depth
 
-	var range_of_spawning_patterns: int = clamp(log(depth), 0, spawning_patterns.size() - 1) 
+	var range_of_spawning_patterns: int = clamp(log(depth), 1, spawning_patterns.size() - 1) 
 
 	var spawning_pattern: Resource = spawning_patterns[randi() % (range_of_spawning_patterns)]
 	var num_of_fishes: int = spawning_pattern.fish_types.size()
