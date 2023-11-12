@@ -1,23 +1,26 @@
 extends Node2D
 
 @export var spawning_patterns: Array[Resource]
+@export var mermaid_scene: PackedScene
 @export var spawning_line: Line2D
 @export var word_bank: Resource
+
+enum SpawnerState {
+	SPAWNER_NORMAL,
+	SPAWNER_MERMAID
+}
+
+var current_state: SpawnerState = SpawnerState.SPAWNER_NORMAL
 
 # # Called when the node enters the scene tree for the first time.
 func _ready():
 	spawn_fishes()
 
-
-# # Called every frame. 'delta' is the elapsed time since the previous frame.
-# func _process(delta):
-# 	pass
-
 func spawn_fishes() -> void:
 	var parent: Play = get_parent()
 	var depth: int = parent.depth
 
-	var range_of_spawning_patterns: int = clamp(log(depth), 1, spawning_patterns.size() - 1) 
+	var range_of_spawning_patterns: int = clamp(sqrt(depth) / 4, 1, spawning_patterns.size() - 1) 
 
 	var spawning_pattern: Resource = spawning_patterns[randi() % (range_of_spawning_patterns)]
 	var num_of_fishes: int = spawning_pattern.fish_types.size()
@@ -32,6 +35,15 @@ func spawn_fishes() -> void:
 		$ActiveFishes.add_child(new_fish)
 	return
 
+func spawn_mermaid() -> void:
+	# var parent: Play = get_parent()
+	var mermaid: Mermaid = mermaid_scene.instantiate()
+	mermaid.position = (get_node('%MermaidSpawnPoint') as Marker2D).position
+	$ActiveFishes.add_child(mermaid)
+
 func _on_spawn_timer_timeout():
-	spawn_fishes()
+	match current_state:
+		SpawnerState.SPAWNER_NORMAL:
+			spawn_fishes()
 	return
+

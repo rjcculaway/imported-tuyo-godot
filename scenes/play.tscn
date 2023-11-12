@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://kxcvawd2q83a"]
+[gd_scene load_steps=30 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
 [ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
@@ -23,6 +23,9 @@
 [ext_resource type="Resource" uid="uid://lxswfqokbw82" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_009.tres" id="14_14l6s"]
 [ext_resource type="PackedScene" uid="uid://b83cjkh7fkgir" path="res://assets/ui/LifeIcon.tscn" id="14_lpprb"]
 [ext_resource type="Resource" uid="uid://bib5bx6lhpwp0" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_010.tres" id="15_4x446"]
+[ext_resource type="PackedScene" uid="uid://deifdrtbep5qh" path="res://scenes/Fishes/Mermaid.tscn" id="16_26dup"]
+[ext_resource type="Script" path="res://scenes/MermaidSpawnPoint.gd" id="19_alfbp"]
+[ext_resource type="Script" path="res://scenes/FishNetBar.gd" id="24_msiel"]
 
 [sub_resource type="Gradient" id="Gradient_ax66c"]
 interpolation_mode = 1
@@ -55,13 +58,14 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 395.273)
-frame = 5
+position = Vector2(64, 297.116)
+frame = 6
 
 [node name="Spawner" type="Node2D" parent="." node_paths=PackedStringArray("spawning_line")]
 position = Vector2(1380, 0)
 script = ExtResource("4_bf7dc")
 spawning_patterns = Array[Resource]([ExtResource("6_3u7q4"), ExtResource("7_nx0p3"), ExtResource("8_0m0bg"), ExtResource("9_i2f4r"), ExtResource("10_itmq8"), ExtResource("11_rkp8w"), ExtResource("12_tbx04"), ExtResource("13_6of11"), ExtResource("14_14l6s"), ExtResource("15_4x446")])
+mermaid_scene = ExtResource("16_26dup")
 spawning_line = NodePath("SpawningLine")
 word_bank = ExtResource("10_lst0b")
 
@@ -78,6 +82,12 @@ script = ExtResource("5_0qupf")
 [node name="ActiveFishes" type="Node2D" parent="Spawner"]
 unique_name_in_owner = true
 
+[node name="MermaidSpawnPoint" type="Marker2D" parent="Spawner"]
+unique_name_in_owner = true
+position = Vector2(-400, 360)
+gizmo_extents = 197.5
+script = ExtResource("19_alfbp")
+
 [node name="FishDespawnArea" type="Area2D" parent="."]
 script = ExtResource("12_14qre")
 
@@ -90,6 +100,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1280.0
 offset_bottom = 720.0
+metadata/_edit_lock_ = true
 
 [node name="GameInformationContainer" type="VBoxContainer" parent="HUD"]
 layout_mode = 0
@@ -153,12 +164,30 @@ layout_mode = 2
 [node name="LifeIcon3" parent="HUD/Lives" instance=ExtResource("14_lpprb")]
 layout_mode = 2
 
+[node name="FishNetBar" type="ProgressBar" parent="HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("10_6mt2a")
+theme_type_variation = &"FishNetBar"
+step = 0.1
+show_percentage = false
+script = ExtResource("24_msiel")
+
 [node name="DepthIncreaseTimer" type="Timer" parent="."]
 unique_name_in_owner = true
 wait_time = 15.0
 autostart = true
 
+[connection signal="depth_changed" from="." to="." method="_on_depth_changed"]
 [connection signal="depth_changed" from="." to="HUD/GameInformationContainer/PlayerDepthContainer/DepthValueLabel" method="_on_depth_changed"]
+[connection signal="fish_net_power_changed" from="." to="HUD/FishNetBar" method="_on_fish_net_power_changed"]
 [connection signal="game_over" from="." to="." method="_on_game_over"]
 [connection signal="lives_changed" from="." to="." method="_on_lives_changed"]
 [connection signal="lives_changed" from="." to="HUD/Lives" method="_on_play_lives_changed"]
