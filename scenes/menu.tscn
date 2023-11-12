@@ -1,6 +1,5 @@
-[gd_scene load_steps=12 format=3 uid="uid://b05so8o1vn4du"]
+[gd_scene load_steps=13 format=3 uid="uid://b05so8o1vn4du"]
 
-[ext_resource type="Shader" path="res://shaders/fx/radial.gdshader" id="1_x4783"]
 [ext_resource type="Texture2D" uid="uid://opuq7itya7rp" path="res://assets/graphics/jc.png" id="2_547os"]
 [ext_resource type="Texture2D" uid="uid://bbcs3ley5xa4w" path="res://assets/graphics/shane.png" id="3_3x338"]
 [ext_resource type="Texture2D" uid="uid://dgswdw4uwd1co" path="res://assets/graphics/mountains.png" id="4_houf5"]
@@ -8,8 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://dxegyn6sst2lh" path="res://assets/graphics/water.png" id="6_y2te3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m5tbx"]
-shader = ExtResource("1_x4783")
-shader_parameter/offset = Vector2(0.635, 0.675)
 
 [sub_resource type="Gradient" id="Gradient_pyu26"]
 interpolation_mode = 2
@@ -20,6 +17,31 @@ colors = PackedColorArray(0.984375, 0.996094, 0.894531, 1, 0.624416, 0.825113, 0
 gradient = SubResource("Gradient_pyu26")
 width = 1280
 height = 720
+fill = 1
+fill_from = Vector2(0.645, 0.695)
+fill_to = Vector2(1, -0.40029)
+
+[sub_resource type="Animation" id="Animation_31hmv"]
+resource_name = "sun_pulse"
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture:fill_to")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5, 10),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 0), Vector2(1, -1), Vector2(1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nwdmf"]
+_data = {
+"sun_pulse": SubResource("Animation_31hmv")
+}
 
 [sub_resource type="Gradient" id="Gradient_8doje"]
 interpolation_mode = 1
@@ -42,6 +64,11 @@ texture_filter = 2
 material = SubResource("ShaderMaterial_m5tbx")
 texture = SubResource("GradientTexture2D_cbnm2")
 centered = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SkyBackground"]
+libraries = {
+"": SubResource("AnimationLibrary_nwdmf")
+}
 
 [node name="JC" type="Sprite2D" parent="."]
 position = Vector2(660, 375)
