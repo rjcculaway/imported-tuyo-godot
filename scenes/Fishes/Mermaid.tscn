@@ -1,0 +1,104 @@
+[gd_scene load_steps=13 format=3 uid="uid://deifdrtbep5qh"]
+
+[ext_resource type="Shader" path="res://scenes/Fishes/Mermaid.gdshader" id="1_hlej6"]
+[ext_resource type="Script" path="res://scenes/Fishes/Mermaid.gd" id="1_wneaw"]
+[ext_resource type="Texture2D" uid="uid://br28clahhb0mx" path="res://assets/graphics/mermaid.png" id="2_uljxn"]
+[ext_resource type="Theme" uid="uid://beone4616rq8g" path="res://assets/themes/theme.tres" id="4_5krg6"]
+[ext_resource type="Script" path="res://scenes/Fishes/MermaidProgress.gd" id="5_snm3h"]
+
+[sub_resource type="Curve2D" id="Curve2D_13ppp"]
+_data = {
+"points": PackedVector2Array(200, 0, 0, 0, 0, 0, 0, 100, 0, -100, -100, -100, 0, 0, 0, 0, 0, -200, 0, -100, 0, 100, 100, -100, 0, 0, 0, 0, 0, 0, 0, -100, 0, 100, -100, 100, 0, 0, 0, 0, 0, 200, 0, 100, 0, -100, 100, 100, 0, 0, 0, 0, 0, 0)
+}
+point_count = 9
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3mcd6"]
+shader = ExtResource("1_hlej6")
+shader_parameter/flash_progress = 0.0
+
+[sub_resource type="Animation" id="Animation_33oxi"]
+resource_name = "mermaid_movement"
+length = 20.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MermaidPath/MermaidPathFollow:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 20),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1ppje"]
+_data = {
+"mermaid_movement": SubResource("Animation_33oxi")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vw323"]
+animation = &"mermaid_movement"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sv0fw"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_2ckmi"]
+states/Start/position = Vector2(429, 100)
+states/mermaid_movement/node = SubResource("AnimationNodeAnimation_vw323")
+states/mermaid_movement/position = Vector2(645, 100)
+transitions = ["Start", "mermaid_movement", SubResource("AnimationNodeStateMachineTransition_sv0fw")]
+graph_offset = Vector2(-59, -95)
+
+[node name="Mermaid" type="Node2D"]
+script = ExtResource("1_wneaw")
+
+[node name="MermaidPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_13ppp")
+
+[node name="MermaidPathFollow" type="PathFollow2D" parent="MermaidPath"]
+position = Vector2(-86.8462, 46.1303)
+rotation = -2.35619
+progress = 737.043
+rotates = false
+
+[node name="MermaidSprite" type="Sprite2D" parent="MermaidPath/MermaidPathFollow"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_3mcd6")
+position = Vector2(-2.15792e-05, -2.15792e-05)
+rotation = 2.35619
+texture = ExtResource("2_uljxn")
+
+[node name="MermaidProgress" type="ProgressBar" parent="MermaidPath/MermaidPathFollow/MermaidSprite"]
+unique_name_in_owner = true
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -108.0
+offset_top = -168.0
+offset_right = -108.0
+offset_bottom = -156.0
+grow_horizontal = 2
+theme = ExtResource("4_5krg6")
+theme_type_variation = &"MermaidBar"
+max_value = 10.0
+show_percentage = false
+script = ExtResource("5_snm3h")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_1ppje")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_2ckmi")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+
+[node name="MermaidTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="MermaidTimer" to="." method="_on_mermaid_timer_timeout"]

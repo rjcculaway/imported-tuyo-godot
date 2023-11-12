@@ -1,10 +1,38 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://beone4616rq8g"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://beone4616rq8g"]
 
 [ext_resource type="FontFile" uid="uid://pqnh7qvgpyub" path="res://assets/fonts/savior/Savior1.ttf" id="1_f03vb"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i3avi"]
+
+[sub_resource type="Gradient" id="Gradient_q58xh"]
+colors = PackedColorArray(1, 0.411765, 0, 1, 0.972333, 0.75414, 0.0340092, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0dqf6"]
+gradient = SubResource("Gradient_q58xh")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_se632"]
+texture = SubResource("GradientTexture2D_0dqf6")
+
+[sub_resource type="Gradient" id="Gradient_37bca"]
+interpolation_mode = 2
+interpolation_color_space = 2
+offsets = PackedFloat32Array(0, 0.25, 0.75, 1)
+colors = PackedColorArray(0.0742188, 0.269531, 0.289063, 1, 0, 0.5, 0.476563, 1, 0.304688, 0.847656, 0.632813, 1, 0.869679, 0.900637, 0.826908, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_duut4"]
+gradient = SubResource("Gradient_37bca")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b1dup"]
+texture = SubResource("GradientTexture2D_duut4")
+
 [resource]
+FishNetBar/base_type = &"ProgressBar"
+FishNetBar/styles/background = SubResource("StyleBoxFlat_i3avi")
+FishNetBar/styles/fill = SubResource("StyleBoxTexture_se632")
 FishWord/base_type = &"RichTextLabel"
 FishWord/font_sizes/normal_font_size = 32
 FishWord/fonts/normal_font = ExtResource("1_f03vb")
 Label/font_sizes/font_size = 48
 Label/fonts/font = ExtResource("1_f03vb")
+MermaidBar/base_type = &"ProgressBar"
+MermaidBar/styles/fill = SubResource("StyleBoxTexture_b1dup")
