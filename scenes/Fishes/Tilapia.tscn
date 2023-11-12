@@ -1,13 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://bun5y18j58rjo"]
 
-[ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/Fishes/Fish.tscn" id="1_otx72"]
+[ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/Fishes/Typeable.tscn" id="1_otx72"]
 [ext_resource type="Script" path="res://scenes/Fishes/Tilapia.gd" id="1_tsq4h"]
 [ext_resource type="Texture2D" uid="uid://crh5s123ow3t6" path="res://assets/graphics/tilapia.png" id="2_uk7h7"]
 
 [node name="Tilapia" type="Node2D" groups=["fishes"]]
 script = ExtResource("1_tsq4h")
 
-[node name="Fish" parent="." instance=ExtResource("1_otx72")]
+[node name="Typeable" parent="." instance=ExtResource("1_otx72")]
 unique_name_in_owner = true
 fish_size = 1
 base_point_value = 3
@@ -16,8 +16,8 @@ max_velocity_multiplier = 1.5
 fish_velocity = Vector2(-64, 0)
 sprite_speed = 0.25
 
-[node name="Sprite2D" parent="Fish" index="0"]
+[node name="Sprite2D" parent="Typeable" index="0"]
 texture = ExtResource("2_uk7h7")
-frame = 1
+frame = 3
 
-[editable path="Fish"]
+[editable path="Typeable"]

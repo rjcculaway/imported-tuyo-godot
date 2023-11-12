@@ -7,4 +7,4 @@ func _enter_tree():
 
 func get_word(word_bank: Resource):
 	var word = word_bank.get_short_word()
-	$Fish.word = word
+	$Typeable.word = word

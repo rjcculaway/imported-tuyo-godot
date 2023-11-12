@@ -1,15 +1,15 @@
-class_name Fish
+class_name Typeable
 extends CharacterBody2D
 
-signal fish_caught(fish_size: FishSize, base_point_value: int)
+signal typeable_caught(fish_size: TypeableSize, base_point_value: int)
 
-enum FishSize {
+enum TypeableSize {
 		SMALL,
 		MEDIUM,
 		LARGE
 }
 
-@export var fish_size: FishSize
+@export var fish_size: TypeableSize
 @export var base_point_value: int
 
 @export var min_velocity_multiplier: float = 1.0
@@ -19,7 +19,7 @@ enum FishSize {
 @export var sprite_speed: float :
 	set (value):
 		if (is_node_ready()):
-			$FishAnimationTree["parameters/TimeScale/scale"] = value	# Reflect the time scale of the sprite animation to this value
+			$TypeableAnimationTree["parameters/TimeScale/scale"] = value	# Reflect the time scale of the sprite animation to this value
 		sprite_speed = value
 	get:
 		return sprite_speed
@@ -27,13 +27,13 @@ enum FishSize {
 var word: String :
 	set (value):
 		word = value
-		$FishWord.text = word;
+		$TypeableWord.text = word;
 	get:
 		return word
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$FishAnimationTree["parameters/TimeScale/scale"] = sprite_speed
+	$TypeableAnimationTree["parameters/TimeScale/scale"] = sprite_speed
 	velocity = fish_velocity * randf_range(min_velocity_multiplier, max_velocity_multiplier)
 
 func _physics_process(_delta):
@@ -41,7 +41,7 @@ func _physics_process(_delta):
 	return
 
 func highlight_word(end: int):
-	var fish_word_label: RichTextLabel = $FishWord
+	var fish_word_label: RichTextLabel = $TypeableWord
 	fish_word_label.remove_paragraph(0)
 	fish_word_label.push_color(Color.YELLOW)
 	fish_word_label.append_text(word.substr(0, end))
@@ -49,13 +49,13 @@ func highlight_word(end: int):
 	fish_word_label.append_text(word.substr(end, -1))
 
 func reset_text():
-	var fish_word_label: RichTextLabel = $FishWord
+	var fish_word_label: RichTextLabel = $TypeableWord
 	fish_word_label.remove_paragraph(0)
 	fish_word_label.append_text(word)
 
 func _on_current_word_changed(current_word: String):
 	if word == current_word:
-		fish_caught.emit(fish_size, base_point_value)
+		typeable_caught.emit(fish_size, base_point_value)
 		get_parent().queue_free()
 		return
 

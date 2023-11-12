@@ -10,16 +10,18 @@ signal game_over()
 
 @export var max_lives = 3
 @export var max_fish_net_power = 100
+@export var mermaid_appearance_depth = 2 # Which depth does the mermaid appear
 
 enum GameStates {
+	TRANSITIONING,
 	GAME_START,
 	GAME_PAUSED,
-	GAME_RUNNING,
+	GAME_NORMAL,
 	GAME_MERMAID,
 	GAME_OVER
 }
 
-var current_state: GameStates = GameStates.GAME_RUNNING
+var current_state: GameStates = GameStates.GAME_NORMAL
 
 var lives: int = 0 :
 	set(new_lives):
@@ -48,14 +50,25 @@ var number_of_times_mermaid_appeared: int = 0;
 
 func enter_state(next_state: GameStates) -> void:
 	exit_state(current_state)
+	current_state = GameStates.TRANSITIONING
+	print_debug("Transitioning to state: " + GameStates.keys()[next_state])
 	match next_state:
+		GameStates.GAME_NORMAL:
+			%DepthIncreaseTimer.start()
+			%Spawner.enter_state(Spawner.SpawnerState.SPAWNER_NORMAL)
+		GameStates.GAME_MERMAID:
+			%Spawner.enter_state(Spawner.SpawnerState.SPAWNER_MERMAID)
 		_:
 			pass
 	current_state = next_state
+	print_debug("Entered state: " + GameStates.keys()[current_state])
 	return
 
 func exit_state(exiting_state: GameStates) -> void:
+	print_debug("Exiting state: " + GameStates.keys()[exiting_state])
 	match exiting_state:
+		GameStates.GAME_NORMAL:
+			%DepthIncreaseTimer.stop()
 		_:
 			pass
 	return
@@ -85,8 +98,7 @@ func _input(event):
 				
 				get_viewport().set_input_as_handled()
 
-
-func _on_fish_caught(fish_size: Fish.FishSize, base_point_value: int) -> void:
+func _on_typeable_caught(fish_size: Typeable.TypeableSize, base_point_value: int) -> void:
 	match current_state:
 		GameStates.GAME_OVER:
 			pass
@@ -95,21 +107,24 @@ func _on_fish_caught(fish_size: Fish.FishSize, base_point_value: int) -> void:
 			score += base_point_value
 			#warning-ignore:integer_division
 			fish_net_power += 1 + base_point_value / 2
-			print_debug("Fish (%s) was caught for %d point(s)." % [str(fish_size), base_point_value])
+			print_debug("Typeable (%s) was caught for %d point(s)." % [Typeable.TypeableSize.keys()[fish_size], base_point_value])
 			return
 
 func _on_depth_increase_timer_timeout() -> void:
 	match current_state:
 		GameStates.GAME_OVER:
-			return
-		_:
+			pass
+		GameStates.GAME_NORMAL:
 			depth += 1
 			$DepthIncreaseTimer.wait_time = max($DepthIncreaseTimer.wait_time - 0.5, 0.5)
+		_:
+			pass
+	return
 
 func _on_fish_escaped() -> void:
 	match current_state:
 		_:
-			print_debug("Fish escaped!")
+			print_debug("Typeable escaped!")
 			lives -= 1
 
 func _on_lives_changed(new_lives: int) -> void:
@@ -121,10 +136,14 @@ func _on_lives_changed(new_lives: int) -> void:
 
 func _on_depth_changed(new_depth) -> void:
 	match current_state:
-		_:
-			var should_mermaid_spawn: bool = new_depth % (500 * (number_of_times_mermaid_appeared + 1)) == 0
+		GameStates.GAME_NORMAL:
+			var should_mermaid_spawn: bool = new_depth % (mermaid_appearance_depth + 2 * number_of_times_mermaid_appeared) == 0
 			if should_mermaid_spawn:
 				enter_state(GameStates.GAME_MERMAID)
+				number_of_times_mermaid_appeared += 1
+		_:
+			pass
+
 
 func load_high_scores() -> Array[Dictionary]:
 	var save_game = FileAccess.open("user://high_scores.dat", FileAccess.READ)
@@ -180,17 +199,9 @@ func save_high_scores() -> void:
 		save_file.store_pascal_string(high_scores[i]["player_name"])
 		save_file.store_64((high_scores[i]["player_score"]))
 
-func on_mermaid_over() -> void:
-	match current_state:
-		GameStates.GAME_MERMAID:
-			enter_state(GameStates.GAME_RUNNING)
-		_:
-			pass
-	return
-
 func _on_game_over() -> void:
 	match current_state:
-		GameStates.GAME_RUNNING:
+		GameStates.GAME_NORMAL:
 			save_high_scores()
 			enter_state(GameStates.GAME_OVER)
 			get_tree().paused = true

@@ -1,9 +1,9 @@
 [gd_scene load_steps=13 format=3 uid="uid://dnq2f567si8mc"]
 
-[ext_resource type="Script" path="res://scenes/Fishes/Fish.gd" id="1_mgkdx"]
-[ext_resource type="Texture2D" uid="uid://cib4ske3c2inj" path="res://assets/graphics/goldfish.png" id="2_bw84a"]
-[ext_resource type="Script" path="res://scenes/Fishes/FishAnimationTree.gd" id="3_x0f0n"]
-[ext_resource type="Theme" uid="uid://beone4616rq8g" path="res://assets/themes/theme.tres" id="4_533qw"]
+[ext_resource type="Script" path="res://scenes/Fishes/Typeable.gd" id="1_l06ej"]
+[ext_resource type="Texture2D" uid="uid://cib4ske3c2inj" path="res://assets/graphics/goldfish.png" id="2_vjhew"]
+[ext_resource type="Script" path="res://scenes/Fishes/TypeableAnimationTree.gd" id="3_2palh"]
+[ext_resource type="Theme" uid="uid://beone4616rq8g" path="res://assets/themes/theme.tres" id="4_v865o"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hb7pa"]
 radius = 28.0
@@ -24,7 +24,6 @@ transitions = ["Start", "fish_idle", SubResource("AnimationNodeStateMachineTrans
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_4xcpv"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_c133h"]
-graph_offset = Vector2(-523.458, -100.967)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_g4xl1")
 nodes/StateMachine/position = Vector2(-220, 100)
 nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_4xcpv")
@@ -53,34 +52,35 @@ _data = {
 "fish_idle": SubResource("Animation_1bxg6")
 }
 
-[node name="Fish" type="CharacterBody2D"]
+[node name="Typeable" type="CharacterBody2D"]
+z_index = 2
 collision_mask = 0
-script = ExtResource("1_mgkdx")
+script = ExtResource("1_l06ej")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_bw84a")
+texture = ExtResource("2_vjhew")
 hframes = 4
-frame = 3
+frame = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_hb7pa")
 
-[node name="FishAnimationTree" type="AnimationTree" parent="."]
+[node name="TypeableAnimationTree" type="AnimationTree" parent="."]
 unique_name_in_owner = true
 tree_root = SubResource("AnimationNodeBlendTree_c133h")
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/TimeScale/scale = 0.25
-script = ExtResource("3_x0f0n")
+script = ExtResource("3_2palh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_d7326")
 }
 
-[node name="FishWord" type="RichTextLabel" parent="."]
+[node name="TypeableWord" type="RichTextLabel" parent="."]
 unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
@@ -95,8 +95,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource("4_533qw")
-theme_type_variation = &"FishWord"
+theme = ExtResource("4_v865o")
+theme_type_variation = &"TypeableWord"
 bbcode_enabled = true
 fit_content = true
 scroll_active = false

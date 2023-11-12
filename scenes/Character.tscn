@@ -108,7 +108,7 @@ _data = {
 }
 
 [node name="Shane" type="Sprite2D" node_paths=PackedStringArray("animation_tree")]
-position = Vector2(64, 423.499)
+position = Vector2(64, 115.481)
 texture = ExtResource("1_pyrrf")
 centered = false
 offset = Vector2(0, -72)

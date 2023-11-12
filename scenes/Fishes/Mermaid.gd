@@ -4,7 +4,6 @@ signal mermaid_over()
 
 @onready var mermaid_sprite: Sprite2D = get_node("%MermaidSprite")
 
-
 func appear() -> void:
 	mermaid_sprite.visible = true
 

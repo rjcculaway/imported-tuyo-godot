@@ -58,13 +58,14 @@ script = ExtResource("1_wneaw")
 curve = SubResource("Curve2D_13ppp")
 
 [node name="MermaidPathFollow" type="PathFollow2D" parent="MermaidPath"]
-position = Vector2(-86.8462, 46.1303)
+position = Vector2(-94.7448, 136.16)
 rotation = -2.35619
-progress = 737.043
+progress = 829.834
 rotates = false
 
 [node name="MermaidSprite" type="Sprite2D" parent="MermaidPath/MermaidPathFollow"]
 unique_name_in_owner = true
+z_index = 1
 material = SubResource("ShaderMaterial_3mcd6")
 position = Vector2(-2.15792e-05, -2.15792e-05)
 rotation = 2.35619

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cfp6yoyl5j8h7"]
 
 [ext_resource type="Script" path="res://scenes/Fishes/Tawilis.gd" id="1_1xy3q"]
-[ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/Fishes/Fish.tscn" id="1_vhnt5"]
+[ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/Fishes/Typeable.tscn" id="1_vhnt5"]
 [ext_resource type="Texture2D" uid="uid://c4bkf05832ok3" path="res://assets/graphics/tawilis.png" id="2_qpsyh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_grddg"]
@@ -11,18 +11,18 @@ height = 112.0
 [node name="Tawilis" type="Node2D" groups=["fishes"]]
 script = ExtResource("1_1xy3q")
 
-[node name="Fish" parent="." instance=ExtResource("1_vhnt5")]
+[node name="Typeable" parent="." instance=ExtResource("1_vhnt5")]
 fish_size = 2
 base_point_value = 5
 max_velocity_multiplier = 2.5
 fish_velocity = Vector2(-64, 0)
 sprite_speed = 0.5
 
-[node name="Sprite2D" parent="Fish" index="0"]
+[node name="Sprite2D" parent="Typeable" index="0"]
 texture = ExtResource("2_qpsyh")
-frame = 1
+frame = 2
 
-[node name="CollisionShape2D" parent="Fish" index="1"]
+[node name="CollisionShape2D" parent="Typeable" index="1"]
 shape = SubResource("CapsuleShape2D_grddg")
 
-[editable path="Fish"]
+[editable path="Typeable"]

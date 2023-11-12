@@ -42,6 +42,7 @@ b = Vector2(0, 720)
 [node name="Play" type="Node2D"]
 texture_repeat = 2
 script = ExtResource("1_nchbe")
+mermaid_appearance_depth = 10
 
 [node name="BG" type="Sprite2D" parent="."]
 scale = Vector2(1, 720)
@@ -58,10 +59,11 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 297.116)
-frame = 6
+position = Vector2(64, 240.528)
+frame = 7
 
 [node name="Spawner" type="Node2D" parent="." node_paths=PackedStringArray("spawning_line")]
+unique_name_in_owner = true
 position = Vector2(1380, 0)
 script = ExtResource("4_bf7dc")
 spawning_patterns = Array[Resource]([ExtResource("6_3u7q4"), ExtResource("7_nx0p3"), ExtResource("8_0m0bg"), ExtResource("9_i2f4r"), ExtResource("10_itmq8"), ExtResource("11_rkp8w"), ExtResource("12_tbx04"), ExtResource("13_6of11"), ExtResource("14_14l6s"), ExtResource("15_4x446")])
@@ -75,6 +77,7 @@ width = 0.0
 default_color = Color(1, 1, 1, 0)
 
 [node name="SpawnTimer" type="Timer" parent="Spawner"]
+unique_name_in_owner = true
 wait_time = 5.0
 autostart = true
 script = ExtResource("5_0qupf")
@@ -193,6 +196,7 @@ autostart = true
 [connection signal="lives_changed" from="." to="HUD/Lives" method="_on_play_lives_changed"]
 [connection signal="score_changed" from="." to="HUD/GameInformationContainer/PlayerScoreContainer/ScoreValueLabel" method="_on_score_changed"]
 [connection signal="timeout" from="Spawner/SpawnTimer" to="Spawner" method="_on_spawn_timer_timeout"]
+[connection signal="child_exiting_tree" from="Spawner/ActiveFishes" to="Spawner" method="_on_active_fishes_reduced"]
 [connection signal="body_exited" from="FishDespawnArea" to="FishDespawnArea" method="_on_body_exited"]
 [connection signal="fish_escaped" from="FishDespawnArea" to="." method="_on_fish_escaped"]
 [connection signal="timeout" from="DepthIncreaseTimer" to="." method="_on_depth_increase_timer_timeout"]
