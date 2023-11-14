@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://kxcvawd2q83a"]
+[gd_scene load_steps=32 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
 [ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
@@ -27,6 +27,7 @@
 [ext_resource type="Script" path="res://scenes/SpawningLine.gd" id="18_50com"]
 [ext_resource type="Script" path="res://scenes/MermaidSpawnPoint.gd" id="19_alfbp"]
 [ext_resource type="Script" path="res://scenes/FishNetBar.gd" id="24_msiel"]
+[ext_resource type="Script" path="res://scenes/CurrentWordDisplay.gd" id="28_ryt37"]
 
 [sub_resource type="Gradient" id="Gradient_ax66c"]
 interpolation_mode = 1
@@ -60,7 +61,8 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 295.853)
+position = Vector2(64, 420.676)
+frame = 7
 
 [node name="Spawner" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -186,15 +188,34 @@ step = 0.1
 show_percentage = false
 script = ExtResource("24_msiel")
 
+[node name="CurrentWordDisplay" type="Label" parent="HUD"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -63.0
+offset_right = 20.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("10_6mt2a")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("28_ryt37")
+
 [node name="DepthIncreaseTimer" type="Timer" parent="."]
 unique_name_in_owner = true
 wait_time = 15.0
 autostart = true
 
+[connection signal="current_typed_word_changed" from="." to="HUD/CurrentWordDisplay" method="_on_current_word_changed"]
 [connection signal="depth_changed" from="." to="." method="_on_depth_changed"]
 [connection signal="depth_changed" from="." to="HUD/GameInformationContainer/PlayerDepthContainer/DepthValueLabel" method="_on_depth_changed"]
+[connection signal="entered_state" from="." to="Spawner" method="_on_game_entered_state"]
 [connection signal="fish_net_power_changed" from="." to="HUD/FishNetBar" method="_on_fish_net_power_changed"]
-[connection signal="game_over" from="." to="." method="_on_game_over"]
 [connection signal="lives_changed" from="." to="." method="_on_lives_changed"]
 [connection signal="lives_changed" from="." to="HUD/Lives" method="_on_play_lives_changed"]
 [connection signal="score_changed" from="." to="HUD/GameInformationContainer/PlayerScoreContainer/ScoreValueLabel" method="_on_score_changed"]

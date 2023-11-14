@@ -19,6 +19,7 @@ sprite_speed = 0.25
 
 [node name="Sprite2D" parent="Fish" index="0"]
 texture = ExtResource("2_uk7h7")
+frame = 2
 
 [node name="Typeable" parent="Fish" instance=ExtResource("1_otx72")]
 unique_name_in_owner = true

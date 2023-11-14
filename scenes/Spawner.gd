@@ -6,6 +6,8 @@ signal no_more_fishes
 @export var mermaid_scene: PackedScene
 @export var word_bank: Resource
 
+const FISHES_GROUP: StringName = "fishes"
+
 enum SpawnerState {
 	TRANSITIONING,
 	SPAWNER_NORMAL,
@@ -15,7 +17,7 @@ enum SpawnerState {
 var current_state: SpawnerState = SpawnerState.SPAWNER_NORMAL
 @onready var size_spawning_patterns: int = spawning_patterns.size() - 1
 
-# # Called when the node enters the scene tree for the first time.
+# Called when the node enters the scene tree for the first time.
 func _ready():
 	enter_state(SpawnerState.SPAWNER_NORMAL)
 
@@ -67,12 +69,6 @@ func enter_state(next_state: SpawnerState) -> void:
 			spawn_fishes()
 		SpawnerState.SPAWNER_MERMAID:
 			print_debug("Waiting for fishes to be gone...")
-
-			var num_of_active_fishes: int = %ActiveFishes.get_child_count()
-			var no_active_fishes: bool = num_of_active_fishes <= 0
-			if not no_active_fishes:
-				await no_more_fishes
-
 			print_debug("Done waiting! Spawning mermaid!")
 			spawn_mermaid()
 		_:
@@ -98,3 +94,16 @@ func _on_active_fishes_reduced(node: Node) -> void:
 			print_debug("No more fishes!")
 			no_more_fishes.emit()
 		return
+
+func _on_game_entered_state(new_state: Play.GameStates):
+	match new_state:
+		Play.GameStates.GAME_NORMAL:
+			enter_state(SpawnerState.SPAWNER_NORMAL)
+		Play.GameStates.GAME_MERMAID:
+			enter_state(Spawner.SpawnerState.SPAWNER_MERMAID)
+			for fish in get_tree().get_nodes_in_group(FISHES_GROUP):
+				var fish_component: Fish = fish.get_node_or_null("Fish")
+				if fish_component:
+					fish_component.enter_state(Fish.FishState.FISH_MERMAID)
+		_:
+			pass

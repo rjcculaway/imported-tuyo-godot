@@ -6,7 +6,7 @@ signal lives_changed(lives: int)
 signal depth_changed(depth: int)
 signal score_changed(score: int)
 signal fish_net_power_changed(fish_net_power: int)
-signal game_over()
+signal entered_state(new_state: GameStates)
 
 @export var max_lives: int = 3
 @export var max_fish_net_power: int = 100
@@ -56,12 +56,12 @@ func enter_state(next_state: GameStates) -> void:
 	match next_state:
 		GameStates.GAME_NORMAL:
 			%DepthIncreaseTimer.start()
-			%Spawner.enter_state(Spawner.SpawnerState.SPAWNER_NORMAL)
 		GameStates.GAME_MERMAID:
-			%Spawner.enter_state(Spawner.SpawnerState.SPAWNER_MERMAID)
+			current_typed_word = ""
 		_:
 			pass
 	current_state = next_state
+	entered_state.emit(current_state)
 	print_debug("Entered state: " + GameStates.keys()[current_state])
 	return
 
@@ -126,21 +126,25 @@ func _on_depth_increase_timer_timeout() -> void:
 
 func _on_fish_escaped() -> void:
 	match current_state:
-		_:
+		GameStates.GAME_NORMAL:
 			print_debug("Typeable escaped!")
 			lives -= 1
+		_:
+			pass
 
 func _on_lives_changed(new_lives: int) -> void:
 	match current_state:
 		_:
 			var all_lives_lost = new_lives <= 0
 			if all_lives_lost:
-				game_over.emit()
+				save_high_scores()
+				enter_state(GameStates.GAME_OVER)
+				get_tree().paused = true
 
 func _on_depth_changed(new_depth) -> void:
 	match current_state:
 		GameStates.GAME_NORMAL:
-			var should_mermaid_spawn: bool = new_depth % max(512, int(mermaid_appearance_depth * pow(number_of_times_mermaid_appeared + 1, 2))) == 0
+			var should_mermaid_spawn: bool = new_depth % min(512, int(mermaid_appearance_depth * pow(number_of_times_mermaid_appeared + 1, 2))) == 0
 			if should_mermaid_spawn:
 				enter_state(GameStates.GAME_MERMAID)
 				number_of_times_mermaid_appeared += 1
@@ -201,10 +205,3 @@ func save_high_scores() -> void:
 	for i in range(len(high_scores)):
 		save_file.store_pascal_string(high_scores[i]["player_name"])
 		save_file.store_64((high_scores[i]["player_score"]))
-
-func _on_game_over() -> void:
-	match current_state:
-		GameStates.GAME_NORMAL:
-			save_high_scores()
-			enter_state(GameStates.GAME_OVER)
-			get_tree().paused = true

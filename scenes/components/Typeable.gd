@@ -32,3 +32,17 @@ func _on_current_word_changed(current_word: String):
 	else:
 		reset_text()
 	return
+
+func fade_in() -> void:
+	var tween: Tween = create_tween()
+
+	tween.tween_property(self, "modulate", Color.from_ok_hsl(1.0, 1.0, 1.0, 1.0), 0.5).set_ease(Tween.EASE_IN_OUT)
+
+	return
+
+func fade_out() -> void:
+	var tween: Tween = create_tween()
+
+	tween.tween_property(self, "modulate", Color.from_ok_hsl(1.0, 1.0, 1.0, 0.0), 0.5).set_ease(Tween.EASE_IN_OUT)
+
+	return
