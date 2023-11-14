@@ -1,19 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://bdovpdtdf55gc"]
+[gd_scene load_steps=4 format=3 uid="uid://bdovpdtdf55gc"]
 
 [ext_resource type="Script" path="res://scenes/Fishes/Goldfish.gd" id="1_78amp"]
-[ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/Fishes/Typeable.tscn" id="1_m88vf"]
+[ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/components/Typeable.tscn" id="1_m88vf"]
+[ext_resource type="PackedScene" uid="uid://dvuurnobsnvrg" path="res://scenes/components/Fish/Fish.tscn" id="3_2mh2d"]
 
 [node name="Goldfish" type="Node2D" groups=["fishes"]]
 script = ExtResource("1_78amp")
 
-[node name="Typeable" parent="." instance=ExtResource("1_m88vf")]
+[node name="Fish" parent="." node_paths=PackedStringArray("typeable") instance=ExtResource("3_2mh2d")]
 unique_name_in_owner = true
+typeable = NodePath("Typeable")
 base_point_value = 1
 max_velocity_multiplier = 1.15
 fish_velocity = Vector2(-64, 0)
 sprite_speed = 0.25
 
-[node name="Sprite2D" parent="Typeable" index="0"]
-frame = 0
+[node name="Typeable" parent="Fish" instance=ExtResource("1_m88vf")]
+unique_name_in_owner = true
+position = Vector2(-8, -2)
 
-[editable path="Typeable"]
+[node name="TypeableWord" parent="Fish/Typeable" index="0"]
+metadata/_edit_use_anchors_ = true
+
+[editable path="Fish/Typeable"]

@@ -1,28 +1,28 @@
 [gd_scene load_steps=5 format=3 uid="uid://cfp6yoyl5j8h7"]
 
 [ext_resource type="Script" path="res://scenes/Fishes/Tawilis.gd" id="1_1xy3q"]
-[ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/Fishes/Typeable.tscn" id="1_vhnt5"]
+[ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/components/Typeable.tscn" id="1_vhnt5"]
 [ext_resource type="Texture2D" uid="uid://c4bkf05832ok3" path="res://assets/graphics/tawilis.png" id="2_qpsyh"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_grddg"]
-radius = 18.0
-height = 112.0
+[ext_resource type="PackedScene" uid="uid://dvuurnobsnvrg" path="res://scenes/components/Fish/Fish.tscn" id="3_84kpg"]
 
 [node name="Tawilis" type="Node2D" groups=["fishes"]]
 script = ExtResource("1_1xy3q")
 
-[node name="Typeable" parent="." instance=ExtResource("1_vhnt5")]
+[node name="Fish" parent="." node_paths=PackedStringArray("typeable") instance=ExtResource("3_84kpg")]
+typeable = NodePath("Typeable")
 fish_size = 2
 base_point_value = 5
+min_velocity_multiplier = 1.5
 max_velocity_multiplier = 2.5
-fish_velocity = Vector2(-64, 0)
-sprite_speed = 0.5
+fish_velocity = Vector2(0, -64)
+sprite_speed = 0.25
 
-[node name="Sprite2D" parent="Typeable" index="0"]
+[node name="Sprite2D" parent="Fish" index="0"]
 texture = ExtResource("2_qpsyh")
-frame = 2
+frame = 0
 
-[node name="CollisionShape2D" parent="Typeable" index="1"]
-shape = SubResource("CapsuleShape2D_grddg")
+[node name="Typeable" parent="Fish" instance=ExtResource("1_vhnt5")]
+position = Vector2(0, -4)
 
-[editable path="Typeable"]
+[editable path="Fish"]
+[editable path="Fish/Typeable"]

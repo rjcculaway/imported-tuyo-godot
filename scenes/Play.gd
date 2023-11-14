@@ -8,9 +8,9 @@ signal score_changed(score: int)
 signal fish_net_power_changed(fish_net_power: int)
 signal game_over()
 
-@export var max_lives = 3
-@export var max_fish_net_power = 100
-@export var mermaid_appearance_depth = 2 # Which depth does the mermaid appear
+@export var max_lives: int = 3
+@export var max_fish_net_power: int = 100
+@export var mermaid_appearance_depth: int = 2 # Which depth does the mermaid appear
 
 enum GameStates {
 	TRANSITIONING,
@@ -98,7 +98,7 @@ func _input(event):
 				
 				get_viewport().set_input_as_handled()
 
-func _on_typeable_caught(fish_size: Typeable.TypeableSize, base_point_value: int) -> void:
+func _on_fish_caught(fish_size: Fish.FishSize, base_point_value: int) -> void:
 	match current_state:
 		GameStates.GAME_OVER:
 			pass
@@ -106,8 +106,8 @@ func _on_typeable_caught(fish_size: Typeable.TypeableSize, base_point_value: int
 			current_typed_word = ""
 			score += base_point_value
 			#warning-ignore:integer_division
-			fish_net_power += 1 + base_point_value / 2
-			print_debug("Typeable (%s) was caught for %d point(s)." % [Typeable.TypeableSize.keys()[fish_size], base_point_value])
+			fish_net_power += (1 + base_point_value / 2)
+			print_debug("Fish (%s) was caught for %d point(s)." % [Fish.FishSize.keys()[fish_size], base_point_value])
 			return
 
 func _on_depth_increase_timer_timeout() -> void:
@@ -137,7 +137,7 @@ func _on_lives_changed(new_lives: int) -> void:
 func _on_depth_changed(new_depth) -> void:
 	match current_state:
 		GameStates.GAME_NORMAL:
-			var should_mermaid_spawn: bool = new_depth % (mermaid_appearance_depth + 2 * number_of_times_mermaid_appeared) == 0
+			var should_mermaid_spawn: bool = new_depth % max(512, int(mermaid_appearance_depth * pow(number_of_times_mermaid_appeared + 1, 2))) == 0
 			if should_mermaid_spawn:
 				enter_state(GameStates.GAME_MERMAID)
 				number_of_times_mermaid_appeared += 1
