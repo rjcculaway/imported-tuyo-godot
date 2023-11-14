@@ -14,7 +14,7 @@ fish_size = 2
 base_point_value = 5
 min_velocity_multiplier = 1.5
 max_velocity_multiplier = 2.5
-fish_velocity = Vector2(0, -64)
+fish_velocity = Vector2(-64, 0)
 sprite_speed = 0.25
 
 [node name="Sprite2D" parent="Fish" index="0"]
