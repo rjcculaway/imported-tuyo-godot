@@ -15,4 +15,4 @@ func _init(p_fish_types = [] as Array[PackedScene]):
 
 [resource]
 script = SubResource("GDScript_1gxxj")
-fish_types = Array[PackedScene]([ExtResource("1_ecijl"), ExtResource("1_ecijl"), ExtResource("1_ecijl")])
+fish_types = Array[PackedScene]([ExtResource("1_ecijl"), ExtResource("1_ecijl"), ExtResource("1_ecijl"), ExtResource("1_ecijl")])
