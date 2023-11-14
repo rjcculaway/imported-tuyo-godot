@@ -11,6 +11,7 @@ signal game_over()
 @export var max_lives: int = 3
 @export var max_fish_net_power: int = 100
 @export var mermaid_appearance_depth: int = 2 # Which depth does the mermaid appear
+@export var erase_cost: int = 5 # The fish net cost when performing an erase. 
 
 enum GameStates {
 	TRANSITIONING,
@@ -94,7 +95,9 @@ func _input(event):
 					current_typed_word += event.as_text_keycode()
 
 				if event.is_action_pressed("reset_word"):
-					current_typed_word = ""
+					if current_typed_word.length() > 0:
+						current_typed_word = ""
+						fish_net_power = max(0, fish_net_power - erase_cost)	# Erasing the currently typed word has a cost
 				
 				get_viewport().set_input_as_handled()
 

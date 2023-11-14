@@ -5,4 +5,7 @@ extends Marker2D
 func _ready():
 	if Engine.is_editor_hint():
 		var mermaid = preload("res://scenes/Fishes/Mermaid/Mermaid.tscn").instantiate()
+
+		(mermaid.get_node("%MermaidSprite") as Sprite2D).modulate = Color.from_ok_hsl(1.0, 1.0, 1.0, 0.5)
+
 		add_child(mermaid)

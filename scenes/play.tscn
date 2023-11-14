@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://kxcvawd2q83a"]
+[gd_scene load_steps=31 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
 [ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://b83cjkh7fkgir" path="res://assets/ui/LifeIcon.tscn" id="14_lpprb"]
 [ext_resource type="Resource" uid="uid://bib5bx6lhpwp0" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_010.tres" id="15_4x446"]
 [ext_resource type="PackedScene" uid="uid://deifdrtbep5qh" path="res://scenes/Fishes/Mermaid/Mermaid.tscn" id="16_lfdrb"]
+[ext_resource type="Script" path="res://scenes/SpawningLine.gd" id="18_50com"]
 [ext_resource type="Script" path="res://scenes/MermaidSpawnPoint.gd" id="19_alfbp"]
 [ext_resource type="Script" path="res://scenes/FishNetBar.gd" id="24_msiel"]
 
@@ -59,22 +60,24 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 272.157)
-frame = 6
+position = Vector2(64, 295.853)
 
-[node name="Spawner" type="Node2D" parent="." node_paths=PackedStringArray("spawning_line")]
+[node name="Spawner" type="Node2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(1380, 0)
 script = ExtResource("4_bf7dc")
 spawning_patterns = Array[Resource]([ExtResource("6_3u7q4"), ExtResource("7_nx0p3"), ExtResource("8_0m0bg"), ExtResource("9_i2f4r"), ExtResource("10_itmq8"), ExtResource("11_rkp8w"), ExtResource("12_tbx04"), ExtResource("13_6of11"), ExtResource("14_14l6s"), ExtResource("15_4x446")])
 mermaid_scene = ExtResource("16_lfdrb")
-spawning_line = NodePath("SpawningLine")
 word_bank = ExtResource("10_lst0b")
 
 [node name="SpawningLine" type="Line2D" parent="Spawner"]
+unique_name_in_owner = true
 points = PackedVector2Array(0, 0, 0, 720)
 width = 0.0
 default_color = Color(1, 1, 1, 0)
+script = ExtResource("18_50com")
+spawning_pattern_preview = ExtResource("15_4x446")
+metadata/_edit_lock_ = true
 
 [node name="SpawnTimer" type="Timer" parent="Spawner"]
 unique_name_in_owner = true

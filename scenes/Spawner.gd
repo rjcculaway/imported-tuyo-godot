@@ -4,7 +4,6 @@ signal no_more_fishes
 
 @export var spawning_patterns: Array[Resource]
 @export var mermaid_scene: PackedScene
-@export var spawning_line: Line2D
 @export var word_bank: Resource
 
 enum SpawnerState {
@@ -35,7 +34,7 @@ func spawn_fishes() -> void:
 		var fish_component: Fish = new_fish.get_node("Fish")
 		var typeable_component: Typeable = new_fish.get_node("%Typeable")
 
-		new_fish.position.y = lerp(spawning_line.points[0].y, spawning_line.points[1].y, 1.0 / (num_of_fishes + 1) * (i + 1.0)) # Evenly divide the spawning points along the vertical axis.
+		new_fish.position.y = lerp(%SpawningLine.points[0].y, %SpawningLine.points[1].y, 1.0 / (num_of_fishes + 1) * (i + 1.0)) # Evenly divide the spawning points along the vertical axis.
 		new_fish.get_word(word_bank)
 		new_fish.add_to_group("fishes", true)
 

@@ -59,9 +59,9 @@ script = ExtResource("1_qhv04")
 curve = SubResource("Curve2D_13ppp")
 
 [node name="MermaidPathFollow" type="PathFollow2D" parent="MermaidPath"]
-position = Vector2(-81.6453, 161.663)
+position = Vector2(-92.1131, 56.6955)
 rotation = -2.35619
-progress = 858.636
+progress = 748.85
 rotates = false
 script = ExtResource("2_ef8c6")
 
