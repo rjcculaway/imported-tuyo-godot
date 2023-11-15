@@ -1,7 +1,7 @@
 class_name Mermaid extends Node2D
 
-signal mermaid_over(mermaid_position: Vector2)
-signal spawn_bubble()
+signal mermaid_over()
+signal spawn_bubble(mermaid_position: Vector2)
 
 @onready var mermaid_sprite: Sprite2D = get_node("%MermaidSprite")
 
@@ -36,7 +36,7 @@ func _on_mermaid_timer_timeout() -> void:
 	call_deferred(&"disappear")
 
 func _on_bubble_spawn_timer_timeout() -> void:
-	spawn_bubble.emit(%MermaidPathFollow.position * 1.5 + position)
+	spawn_bubble.emit(%MermaidPathFollow.position + position)
 	return
 
 

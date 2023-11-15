@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://bun5y18j58rjo"]
+[gd_scene load_steps=6 format=3 uid="uid://bun5y18j58rjo"]
 
 [ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/components/Typeable.tscn" id="1_otx72"]
 [ext_resource type="Script" path="res://scenes/Fishes/Tilapia.gd" id="1_tsq4h"]
 [ext_resource type="Texture2D" uid="uid://crh5s123ow3t6" path="res://assets/graphics/tilapia.png" id="2_uk7h7"]
 [ext_resource type="PackedScene" uid="uid://dvuurnobsnvrg" path="res://scenes/components/Fish/Fish.tscn" id="3_0li77"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_qk2rh"]
+polygon = PackedVector2Array(-84, -3, -61, -6, -30, -8, -7, -9, 25, -5, 44, 1, 74, 2, 83, 3, 81, 24, 61, 35, 46, 16, 33, 22, 12, 30, -16, 38, -48, 35, -71, 25, -82, 10)
 
 [node name="Tilapia" type="Node2D" groups=["fishes"]]
 script = ExtResource("1_tsq4h")
@@ -19,11 +22,14 @@ sprite_speed = 0.25
 
 [node name="Sprite2D" parent="Fish" index="0"]
 texture = ExtResource("2_uk7h7")
-frame = 2
 
 [node name="Typeable" parent="Fish" instance=ExtResource("1_otx72")]
 unique_name_in_owner = true
 position = Vector2(-8, -4)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+occluder = SubResource("OccluderPolygon2D_qk2rh")
 
 [editable path="Fish"]
 [editable path="Fish/Typeable"]

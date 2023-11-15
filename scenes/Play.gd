@@ -114,9 +114,15 @@ func _on_fish_caught(fish_size: Fish.FishSize, base_point_value: int) -> void:
 			print_debug("Fish (%s) was caught for %d point(s)." % [Fish.FishSize.keys()[fish_size], base_point_value])
 			return
 
-func _on_bubble_popped(success: bool) -> void:
-	if success:
-		pass
+func _on_bubble_popped(success: bool, bubble_score: int) -> void:
+	match current_state:
+		GameStates.GAME_OVER:
+			pass
+		_:
+			if success:
+				current_typed_word = ""
+				score +=  bubble_score * (depth + 1)
+				fish_net_power += bubble_score
 	return
 
 func _on_depth_increase_timer_timeout() -> void:

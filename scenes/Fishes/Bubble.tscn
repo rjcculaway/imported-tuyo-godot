@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bxwf356128q6k"]
+[gd_scene load_steps=11 format=3 uid="uid://bxwf356128q6k"]
 
 [ext_resource type="Script" path="res://scenes/Fishes/Bubble.gd" id="1_46jgw"]
 [ext_resource type="PackedScene" uid="uid://dnq2f567si8mc" path="res://scenes/components/Typeable.tscn" id="2_jbqel"]
 [ext_resource type="Texture2D" uid="uid://c6uaxvu4l6e17" path="res://assets/graphics/bubble.png" id="3_1pkoh"]
+[ext_resource type="Script" path="res://scenes/Fishes/BubbleSprite.gd" id="4_p1hvh"]
 
 [sub_resource type="Animation" id="Animation_wk746"]
 resource_name = "RESET"
@@ -10,7 +11,7 @@ resource_name = "RESET"
 [sub_resource type="Animation" id="Animation_cl3aa"]
 resource_name = "bubble_explode"
 length = 0.25
-step = 0.05
+step = 0.025
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -18,7 +19,7 @@ tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1),
+"times": PackedFloat32Array(0, 0.025, 0.05),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [3, 4, 5]
@@ -42,7 +43,7 @@ tracks/2/path = NodePath(".:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.15),
+"times": PackedFloat32Array(0, 0.075),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -86,6 +87,28 @@ _data = {
 "bubble_idle": SubResource("Animation_eqht6")
 }
 
+[sub_resource type="Animation" id="Animation_iecre"]
+resource_name = "bubble_floating"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"floating"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ei6au"]
+_data = {
+"bubble_floating": SubResource("Animation_iecre")
+}
+
 [node name="Bubble" type="Node2D"]
 script = ExtResource("1_46jgw")
 
@@ -97,18 +120,25 @@ position = Vector2(1, -2)
 text = ""
 visible_characters_behavior = 1
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="BubbleSprite" type="Sprite2D" parent="."]
 z_index = 1
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("3_1pkoh")
 hframes = 3
 vframes = 2
-frame = 2
+frame = 3
+script = ExtResource("4_p1hvh")
 
-[node name="BubbleAnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+[node name="BubbleAnimationPlayer" type="AnimationPlayer" parent="BubbleSprite"]
 unique_name_in_owner = true
 speed_scale = 0.5
 libraries = {
 "": SubResource("AnimationLibrary_c42dy")
+}
+
+[node name="FloatingAnimationPlayer" type="AnimationPlayer" parent="BubbleSprite"]
+libraries = {
+"": SubResource("AnimationLibrary_ei6au")
 }
 
 [node name="BubbleTimer" type="Timer" parent="."]

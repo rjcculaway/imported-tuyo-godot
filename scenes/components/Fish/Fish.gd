@@ -12,7 +12,7 @@ enum FishSize {
 enum FishState {
 	TRANSITIONING,
 	FISH_NORMAL,
-	FISH_MERMAID,
+	FISH_INACTIVE,
 }
 
 @export var typeable: Typeable
@@ -44,7 +44,7 @@ func enter_state(next_state: FishState) -> void:
 			typeable.connect(&"typed_word_same", _on_typed_word_same)
 			velocity = fish_velocity * randf_range(min_velocity_multiplier, max_velocity_multiplier)
 			typeable.fade_in()
-		FishState.FISH_MERMAID:
+		FishState.FISH_INACTIVE:
 			$FishAnimationTree["parameters/TimeScale/scale"] = sprite_speed
 			velocity = Vector2(-escaping_velocity, 0.0)
 			typeable.reset_text()

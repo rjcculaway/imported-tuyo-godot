@@ -12,7 +12,8 @@ const FISHES_GROUP: StringName = "fishes"
 enum SpawnerState {
 	TRANSITIONING,
 	SPAWNER_NORMAL,
-	SPAWNER_MERMAID
+	SPAWNER_MERMAID,
+	SPAWNER_GAME_OVER
 }
 
 var current_state: SpawnerState = SpawnerState.TRANSITIONING
@@ -52,13 +53,14 @@ func spawn_mermaid() -> void:
 	mermaid.connect(&"spawn_bubble", spawn_bubble)
 	$ActiveFishes.add_child.call_deferred(mermaid)
 
-func spawn_bubble(spawn_position: Vector2) -> void:
+func spawn_bubble(mermaid_position: Vector2) -> void:
 	var parent: Play = get_parent()
 	var bubble: Bubble = bubble_scene.instantiate()
 	var typeable_component: Typeable = bubble.get_node("%Typeable")
 	
 	bubble.get_word(word_bank)
-	bubble.position = spawn_position
+	var bubble_x: float = lerp(%BubbleSpawningLine.points[0].x, %BubbleSpawningLine.points[1].x, randf())
+	bubble.position = Vector2(bubble_x, mermaid_position.y)
 	
 	parent.connect("current_typed_word_changed", typeable_component._on_current_word_changed)
 	bubble.connect(&"bubble_popped", parent._on_bubble_popped)
@@ -84,10 +86,15 @@ func enter_state(next_state: SpawnerState) -> void:
 			for fish in get_tree().get_nodes_in_group(FISHES_GROUP):
 				var fish_component: Fish = fish.get_node_or_null("Fish")
 				if fish_component:
-					fish_component.enter_state(Fish.FishState.FISH_MERMAID)
+					fish_component.enter_state(Fish.FishState.FISH_INACTIVE)
 			print_debug("Waiting for fishes to be gone...")
 			print_debug("Done waiting! Spawning mermaid!")
 			spawn_mermaid()
+		SpawnerState.SPAWNER_GAME_OVER:
+			for fish in get_tree().get_nodes_in_group(FISHES_GROUP):
+				var fish_component: Fish = fish.get_node_or_null("Fish")
+				if fish_component:
+					fish_component.enter_state(Fish.FishState.FISH_INACTIVE)
 		_:
 			pass
 	current_state = next_state
