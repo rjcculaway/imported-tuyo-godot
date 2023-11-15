@@ -22,7 +22,7 @@ enum GameStates {
 	GAME_OVER
 }
 
-var current_state: GameStates = GameStates.GAME_NORMAL
+var current_state: GameStates = GameStates.TRANSITIONING
 
 var lives: int = 0 :
 	set(new_lives):
@@ -77,6 +77,7 @@ func exit_state(exiting_state: GameStates) -> void:
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	lives = max_lives
+	enter_state(GameStates.GAME_MERMAID)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -112,6 +113,11 @@ func _on_fish_caught(fish_size: Fish.FishSize, base_point_value: int) -> void:
 			fish_net_power += (1 + base_point_value / 2)
 			print_debug("Fish (%s) was caught for %d point(s)." % [Fish.FishSize.keys()[fish_size], base_point_value])
 			return
+
+func _on_bubble_popped(success: bool) -> void:
+	if success:
+		pass
+	return
 
 func _on_depth_increase_timer_timeout() -> void:
 	match current_state:

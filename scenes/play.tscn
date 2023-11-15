@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://kxcvawd2q83a"]
+[gd_scene load_steps=33 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
 [ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
@@ -23,11 +23,12 @@
 [ext_resource type="Resource" uid="uid://lxswfqokbw82" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_009.tres" id="14_14l6s"]
 [ext_resource type="PackedScene" uid="uid://b83cjkh7fkgir" path="res://assets/ui/LifeIcon.tscn" id="14_lpprb"]
 [ext_resource type="Resource" uid="uid://bib5bx6lhpwp0" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_010.tres" id="15_4x446"]
+[ext_resource type="PackedScene" uid="uid://bxwf356128q6k" path="res://scenes/Fishes/Bubble.tscn" id="16_74f02"]
 [ext_resource type="PackedScene" uid="uid://deifdrtbep5qh" path="res://scenes/Fishes/Mermaid/Mermaid.tscn" id="16_lfdrb"]
 [ext_resource type="Script" path="res://scenes/SpawningLine.gd" id="18_50com"]
 [ext_resource type="Script" path="res://scenes/MermaidSpawnPoint.gd" id="19_alfbp"]
 [ext_resource type="Script" path="res://scenes/FishNetBar.gd" id="24_msiel"]
-[ext_resource type="Script" path="res://scenes/CurrentWordDisplay.gd" id="28_ryt37"]
+[ext_resource type="Script" path="res://scenes/MainGame/CurrentWordDisplay.gd" id="28_2ckv8"]
 
 [sub_resource type="Gradient" id="Gradient_ax66c"]
 interpolation_mode = 1
@@ -61,14 +62,15 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 420.676)
-frame = 7
+position = Vector2(64, 306.964)
+frame = 6
 
 [node name="Spawner" type="Node2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(1380, 0)
 script = ExtResource("4_bf7dc")
 spawning_patterns = Array[Resource]([ExtResource("6_3u7q4"), ExtResource("7_nx0p3"), ExtResource("8_0m0bg"), ExtResource("9_i2f4r"), ExtResource("10_itmq8"), ExtResource("11_rkp8w"), ExtResource("12_tbx04"), ExtResource("13_6of11"), ExtResource("14_14l6s"), ExtResource("15_4x446")])
+bubble_scene = ExtResource("16_74f02")
 mermaid_scene = ExtResource("16_lfdrb")
 word_bank = ExtResource("10_lst0b")
 
@@ -204,7 +206,7 @@ grow_vertical = 0
 theme = ExtResource("10_6mt2a")
 horizontal_alignment = 1
 vertical_alignment = 1
-script = ExtResource("28_ryt37")
+script = ExtResource("28_2ckv8")
 
 [node name="DepthIncreaseTimer" type="Timer" parent="."]
 unique_name_in_owner = true

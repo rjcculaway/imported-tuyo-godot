@@ -59,9 +59,10 @@ script = ExtResource("1_qhv04")
 curve = SubResource("Curve2D_13ppp")
 
 [node name="MermaidPathFollow" type="PathFollow2D" parent="MermaidPath"]
-position = Vector2(99.9945, -98.7397)
+unique_name_in_owner = true
+position = Vector2(73.0832, -171.345)
 rotation = -2.35619
-progress = 477.147
+progress = 397.466
 rotates = false
 script = ExtResource("2_ef8c6")
 
@@ -104,4 +105,9 @@ wait_time = 15.0
 one_shot = true
 autostart = true
 
+[node name="BubbleSpawnTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+autostart = true
+
 [connection signal="timeout" from="MermaidTimer" to="." method="_on_mermaid_timer_timeout"]
+[connection signal="timeout" from="BubbleSpawnTimer" to="." method="_on_bubble_spawn_timer_timeout"]
