@@ -56,6 +56,7 @@ func enter_state(next_state: GameStates) -> void:
 	match next_state:
 		GameStates.GAME_NORMAL:
 			%DepthIncreaseTimer.start()
+			current_typed_word = ""
 		GameStates.GAME_MERMAID:
 			current_typed_word = ""
 		_:
@@ -77,7 +78,7 @@ func exit_state(exiting_state: GameStates) -> void:
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	lives = max_lives
-	enter_state(GameStates.GAME_MERMAID)
+	enter_state(GameStates.GAME_NORMAL)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

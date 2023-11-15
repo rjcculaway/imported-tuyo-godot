@@ -1,8 +1,10 @@
-[gd_scene load_steps=36 format=3 uid="uid://kxcvawd2q83a"]
+[gd_scene load_steps=39 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
 [ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
+[ext_resource type="Shader" path="res://scenes/WaterLevelShader.gdshader" id="2_ns3c3"]
 [ext_resource type="Script" path="res://scenes/UnderwaterBg.gd" id="2_yfhgu"]
+[ext_resource type="Script" path="res://scenes/Background.gd" id="3_2rk8l"]
 [ext_resource type="PackedScene" uid="uid://c0p32h8a6l2df" path="res://scenes/Character.tscn" id="3_ts3qv"]
 [ext_resource type="Script" path="res://scenes/Spawner.gd" id="4_bf7dc"]
 [ext_resource type="Script" path="res://scenes/SpawnTimer.gd" id="5_0qupf"]
@@ -41,14 +43,19 @@ fill = 1
 fill_from = Vector2(0.5, 0)
 fill_to = Vector2(0.5, 0.75)
 
-[sub_resource type="Gradient" id="Gradient_ax66c"]
-interpolation_mode = 1
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0, 0.223529, 0.352941, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tp4j6"]
+shader = ExtResource("2_ns3c3")
+shader_parameter/water_depth = 0.0
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_mtou2"]
-gradient = SubResource("Gradient_ax66c")
+[sub_resource type="Gradient" id="Gradient_4boiy"]
+interpolation_color_space = 2
+offsets = PackedFloat32Array(0, 0.33871, 0.637097, 0.903226, 0.995968)
+colors = PackedColorArray(0.219608, 0.666667, 0.635294, 1, 0.1976, 0.52, 0.369547, 1, 0.0405, 0.19065, 0.45, 1, 0.0196078, 0.113725, 0.243137, 1, 0.0196078, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nj8hv"]
+gradient = SubResource("Gradient_4boiy")
 width = 1280
+height = 720
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_74lwt"]
 
@@ -70,14 +77,14 @@ texture = SubResource("GradientTexture2D_sd6jo")
 offset = Vector2(0, 360)
 
 [node name="BG" type="Sprite2D" parent="."]
-scale = Vector2(1, 720)
-texture = SubResource("GradientTexture1D_mtou2")
+material = SubResource("ShaderMaterial_tp4j6")
+texture = SubResource("GradientTexture2D_nj8hv")
 centered = false
+script = ExtResource("3_2rk8l")
 
 [node name="UnderwaterBg" type="Sprite2D" parent="BG"]
 texture_repeat = 2
 material = SubResource("CanvasItemMaterial_74lwt")
-scale = Vector2(1, 0.00138889)
 texture = ExtResource("1_2g0dx")
 centered = false
 region_enabled = true
@@ -85,8 +92,7 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 299.545)
-frame = 7
+position = Vector2(64, 336.892)
 
 [node name="Spawner" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -244,6 +250,7 @@ autostart = true
 
 [connection signal="current_typed_word_changed" from="." to="HUD/CurrentWordDisplay" method="_on_current_word_changed"]
 [connection signal="depth_changed" from="." to="." method="_on_depth_changed"]
+[connection signal="depth_changed" from="." to="BG" method="_on_depth_changed"]
 [connection signal="depth_changed" from="." to="HUD/GameInformationContainer/PlayerDepthContainer/DepthValueLabel" method="_on_depth_changed"]
 [connection signal="entered_state" from="." to="Spawner" method="_on_game_entered_state"]
 [connection signal="fish_net_power_changed" from="." to="HUD/FishNetBar" method="_on_fish_net_power_changed"]

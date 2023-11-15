@@ -111,7 +111,7 @@ _data = {
 polygon = PackedVector2Array(-6, -47.1174, 28, -43.4631, 45, -30.5652, 63, -14.5227, 65, 14.4558, 57, 52.4616, 20, 51.2277, -54, 49.3467, -26, -29.0458)
 
 [node name="Shane" type="Sprite2D" node_paths=PackedStringArray("animation_tree")]
-position = Vector2(64, 370.696)
+position = Vector2(64, 97.1331)
 texture = ExtResource("1_pyrrf")
 centered = false
 offset = Vector2(0, -72)

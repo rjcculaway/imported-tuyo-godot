@@ -24,12 +24,12 @@ sprite_speed = 0.25
 texture = ExtResource("2_qpsyh")
 frame = 1
 
-[node name="Typeable" parent="Fish" instance=ExtResource("1_vhnt5")]
-position = Vector2(0, -4)
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Fish/Sprite2D" index="0"]
 modulate = Color(1, 1, 1, 0)
 occluder = SubResource("OccluderPolygon2D_k7i86")
+
+[node name="Typeable" parent="Fish" instance=ExtResource("1_vhnt5")]
+position = Vector2(0, -4)
 
 [editable path="Fish"]
 [editable path="Fish/Typeable"]
