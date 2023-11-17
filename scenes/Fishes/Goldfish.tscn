@@ -19,6 +19,9 @@ max_velocity_multiplier = 1.15
 fish_velocity = Vector2(-64, 0)
 sprite_speed = 0.25
 
+[node name="Sprite2D" parent="Fish" index="0"]
+frame = 3
+
 [node name="Typeable" parent="Fish" instance=ExtResource("1_m88vf")]
 unique_name_in_owner = true
 position = Vector2(-8, -2)
@@ -30,4 +33,5 @@ metadata/_edit_use_anchors_ = true
 modulate = Color(1, 1, 1, 0)
 occluder = SubResource("OccluderPolygon2D_ymy2p")
 
+[editable path="Fish"]
 [editable path="Fish/Typeable"]

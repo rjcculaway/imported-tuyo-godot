@@ -1,7 +1,7 @@
 class_name Fish
 extends CharacterBody2D
 
-signal fish_caught(fish_size: FishSize, base_point_value: int)
+signal fish_caught(node: Node2D, fish_size: FishSize, base_point_value: int)
 
 enum FishSize {
 		SMALL,
@@ -13,6 +13,7 @@ enum FishState {
 	TRANSITIONING,
 	FISH_NORMAL,
 	FISH_INACTIVE,
+	FISH_CAUGHT,
 }
 
 @export var typeable: Typeable
@@ -44,10 +45,11 @@ func enter_state(next_state: FishState) -> void:
 			typeable.connect(&"typed_word_same", _on_typed_word_same)
 			velocity = fish_velocity * randf_range(min_velocity_multiplier, max_velocity_multiplier)
 			typeable.fade_in()
+			$CollisionShape2D.disabled = false
 		FishState.FISH_INACTIVE:
 			$FishAnimationTree["parameters/TimeScale/scale"] = sprite_speed
+			$Typeable.fade_out()
 			velocity = Vector2(-escaping_velocity, 0.0)
-			typeable.reset_text()
 		_:
 			return
 	current_state = next_state
@@ -61,7 +63,8 @@ func exit_state(exiting_state: FishState) -> void:
 			$FishAnimationTree["parameters/TimeScale/scale"] = 1.0
 			typeable.disconnect(&"typed_word_same", _on_typed_word_same)
 			velocity = Vector2(0.0, 0.0)
-			typeable.fade_out()
+			typeable.fade_out.call_deferred()
+			$CollisionShape2D.set_deferred("disabled", true)
 		_:
 			pass
 	return
@@ -71,9 +74,13 @@ func _ready():
 	enter_state(FishState.FISH_NORMAL)
 
 func _physics_process(_delta):
-	move_and_slide()
+	match current_state:
+		FishState.FISH_CAUGHT:
+			pass
+		_:
+			move_and_slide()
 	return
 
 func _on_typed_word_same():
-	fish_caught.emit(fish_size, base_point_value)
-	get_parent().queue_free()
+	enter_state(FishState.FISH_CAUGHT)
+	fish_caught.emit(get_parent(), fish_size, base_point_value)

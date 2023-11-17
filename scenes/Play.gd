@@ -61,7 +61,16 @@ func enter_state(next_state: GameStates) -> void:
 			current_typed_word = ""
 		GameStates.GAME_OVER:
 			save_high_scores()
-			%Spawner.enter_state(Spawner.SpawnerState.SPAWNER_GAME_OVER)
+			var high_scores = load_high_scores()
+
+			%HighScoresList.clear()
+			for high_score in high_scores:
+				%HighScoresList.add_item(str(high_score["player_name"]), null, false)
+				%HighScoresList.add_item(str(high_score["player_score"]), null, false)
+				%Spawner.enter_state(Spawner.SpawnerState.SPAWNER_GAME_OVER)
+				
+			%HighScoresList.set_same_column_width(false)
+			%HighScoresList.set_same_column_width(true)
 			%GameOverPanel.visible = true
 		_:
 			pass
@@ -118,16 +127,26 @@ func _input(event):
 				
 				get_viewport().set_input_as_handled()
 
-func _on_fish_caught(fish_size: Fish.FishSize, base_point_value: int) -> void:
+func _on_fish_caught(node: Node2D, fish_size: Fish.FishSize, base_point_value: int) -> void:
 	match current_state:
 		GameStates.GAME_OVER:
 			pass
 		_:
 			current_typed_word = ""
-			score += base_point_value
+			
+			var tween = node.create_tween()
+			tween.tween_property(node.get_node("%Fish"), "global_position", %Character.global_position, 0.25).set_ease(Tween.EASE_IN_OUT)
+			tween.parallel().tween_property(node.get_node("%Fish"), "scale", Vector2(0.0, 0.0), 0.25).set_ease(Tween.EASE_IN_OUT)
+			tween.tween_callback(node.queue_free)
+			
+			await tween.finished
+
+			score += base_point_value * roundi(float(fish_net_power) / float(max_fish_net_power) + 1.0)
 			#warning-ignore:integer_division
-			fish_net_power += (1 + base_point_value / 2)
+			fish_net_power += (1 + roundi(float(base_point_value) / 2))
+
 			print_debug("Fish (%s) was caught for %d point(s)." % [Fish.FishSize.keys()[fish_size], base_point_value])
+			
 			return
 
 func _on_bubble_popped(success: bool, bubble_score: int) -> void:

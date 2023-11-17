@@ -1,29 +1,41 @@
-[gd_resource type="Theme" load_steps=16 format=3 uid="uid://beone4616rq8g"]
+[gd_resource type="Theme" load_steps=17 format=3 uid="uid://beone4616rq8g"]
 
 [ext_resource type="Texture2D" uid="uid://bjampy0idj844" path="res://assets/ui/btn.png" id="1_1or2b"]
 [ext_resource type="FontFile" uid="uid://pqnh7qvgpyub" path="res://assets/fonts/savior/Savior1.ttf" id="1_f03vb"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qu2mq"]
+content_margin_left = 35.0
+content_margin_top = 20.0
+content_margin_right = 30.0
+content_margin_bottom = 20.0
 texture = ExtResource("1_1or2b")
-texture_margin_left = 10.0
-texture_margin_top = 10.0
-texture_margin_right = 10.0
-texture_margin_bottom = 10.0
+texture_margin_left = 25.0
+texture_margin_top = 25.0
+texture_margin_right = 25.0
+texture_margin_bottom = 25.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vk6fa"]
+content_margin_left = 35.0
+content_margin_top = 20.0
+content_margin_right = 30.0
+content_margin_bottom = 20.0
 texture = ExtResource("1_1or2b")
-texture_margin_left = 10.0
-texture_margin_top = 10.0
-texture_margin_right = 10.0
-texture_margin_bottom = 10.0
+texture_margin_left = 25.0
+texture_margin_top = 25.0
+texture_margin_right = 25.0
+texture_margin_bottom = 25.0
 modulate_color = Color(0.784314, 0.784314, 0.784314, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3f4vg"]
+content_margin_left = 35.0
+content_margin_top = 20.0
+content_margin_right = 30.0
+content_margin_bottom = 20.0
 texture = ExtResource("1_1or2b")
-texture_margin_left = 10.0
-texture_margin_top = 10.0
-texture_margin_right = 10.0
-texture_margin_bottom = 10.0
+texture_margin_left = 25.0
+texture_margin_top = 25.0
+texture_margin_right = 25.0
+texture_margin_bottom = 25.0
 modulate_color = Color(0.501961, 0.501961, 0.501961, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i3avi"]
@@ -36,6 +48,18 @@ gradient = SubResource("Gradient_q58xh")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_se632"]
 texture = SubResource("GradientTexture2D_0dqf6")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dcujp"]
+content_margin_left = 25.0
+content_margin_top = 25.0
+content_margin_right = 25.0
+content_margin_bottom = 25.0
+texture = ExtResource("1_1or2b")
+texture_margin_left = 25.0
+texture_margin_top = 25.0
+texture_margin_right = 25.0
+texture_margin_bottom = 25.0
+modulate_color = Color(0.784314, 0.784314, 0.784314, 1)
 
 [sub_resource type="Gradient" id="Gradient_37bca"]
 interpolation_mode = 2
@@ -77,6 +101,11 @@ Button/styles/pressed = SubResource("StyleBoxTexture_3f4vg")
 FishNetBar/base_type = &"ProgressBar"
 FishNetBar/styles/background = SubResource("StyleBoxFlat_i3avi")
 FishNetBar/styles/fill = SubResource("StyleBoxTexture_se632")
+ItemList/colors/font_color = Color(0.278431, 0.160784, 0.0431373, 1)
+ItemList/colors/font_hovered_color = Color(0.278431, 0.160784, 0.0431373, 1)
+ItemList/font_sizes/font_size = 32
+ItemList/fonts/font = ExtResource("1_f03vb")
+ItemList/styles/panel = SubResource("StyleBoxTexture_dcujp")
 Label/font_sizes/font_size = 48
 Label/fonts/font = ExtResource("1_f03vb")
 MermaidBar/base_type = &"ProgressBar"

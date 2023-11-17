@@ -1,7 +1,8 @@
-[gd_scene load_steps=39 format=3 uid="uid://kxcvawd2q83a"]
+[gd_scene load_steps=41 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
 [ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
+[ext_resource type="Script" path="res://scenes/UnderwaterLight.gd" id="2_27774"]
 [ext_resource type="Shader" path="res://scenes/WaterLevelShader.gdshader" id="2_ns3c3"]
 [ext_resource type="Script" path="res://scenes/UnderwaterBg.gd" id="2_yfhgu"]
 [ext_resource type="Script" path="res://scenes/Background.gd" id="3_2rk8l"]
@@ -39,9 +40,10 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 gradient = SubResource("Gradient_vef6j")
 width = 1280
 height = 720
+use_hdr = true
 fill = 1
 fill_from = Vector2(0.5, 0)
-fill_to = Vector2(0.5, 0.75)
+fill_to = Vector2(0.5, 0.857449)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tp4j6"]
 shader = ExtResource("2_ns3c3")
@@ -62,19 +64,27 @@ height = 720
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_o50xx"]
 b = Vector2(0, 720)
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hvrs6"]
+light_mode = 1
+
 [node name="Play" type="Node2D"]
 texture_repeat = 2
 script = ExtResource("1_nchbe")
 mermaid_appearance_depth = 10
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
+[node name="UnderwaterLight" type="PointLight2D" parent="."]
+texture_filter = 6
 position = Vector2(640, 0)
 color = Color(0.929412, 0.960784, 0.752941, 1)
+energy = 0.75
 shadow_enabled = true
 shadow_filter = 1
 shadow_filter_smooth = 3.1
 texture = SubResource("GradientTexture2D_sd6jo")
 offset = Vector2(0, 360)
+script = ExtResource("2_27774")
+min_underwater_light_reach = 0.8
+max_underwater_light_reach = 0.45
 
 [node name="BG" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_tp4j6")
@@ -92,7 +102,9 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 427.108)
+unique_name_in_owner = true
+position = Vector2(64, 351.67)
+frame = 7
 
 [node name="Spawner" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -146,6 +158,7 @@ wait_time = 15.0
 autostart = true
 
 [node name="HUD" type="Control" parent="."]
+material = SubResource("CanvasItemMaterial_hvrs6")
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1280.0
@@ -153,6 +166,7 @@ offset_bottom = 720.0
 metadata/_edit_lock_ = true
 
 [node name="GameInformationContainer" type="VBoxContainer" parent="HUD"]
+use_parent_material = true
 layout_mode = 0
 offset_left = 24.0
 offset_top = 16.0
@@ -160,38 +174,45 @@ offset_right = 161.0
 offset_bottom = 104.0
 
 [node name="PlayerDepthContainer" type="HBoxContainer" parent="HUD/GameInformationContainer"]
+use_parent_material = true
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 32
 
 [node name="DepthLabel" type="Label" parent="HUD/GameInformationContainer/PlayerDepthContainer"]
+use_parent_material = true
 layout_mode = 2
 theme = ExtResource("10_6mt2a")
 text = "Depth"
 
 [node name="DepthValueLabel" type="Label" parent="HUD/GameInformationContainer/PlayerDepthContainer"]
+use_parent_material = true
 layout_mode = 2
 theme = ExtResource("10_6mt2a")
 text = "0"
 script = ExtResource("11_4uihv")
 
 [node name="PlayerScoreContainer" type="HBoxContainer" parent="HUD/GameInformationContainer"]
+use_parent_material = true
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 29
 
 [node name="ScoreLabel" type="Label" parent="HUD/GameInformationContainer/PlayerScoreContainer"]
+use_parent_material = true
 layout_mode = 2
 theme = ExtResource("10_6mt2a")
 text = "Score"
 
 [node name="ScoreValueLabel" type="Label" parent="HUD/GameInformationContainer/PlayerScoreContainer"]
+use_parent_material = true
 layout_mode = 2
 theme = ExtResource("10_6mt2a")
 text = "0"
 script = ExtResource("12_t5unn")
 
 [node name="Lives" type="HBoxContainer" parent="HUD"]
+use_parent_material = true
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -216,6 +237,7 @@ layout_mode = 2
 
 [node name="FishNetBar" type="ProgressBar" parent="HUD"]
 unique_name_in_owner = true
+use_parent_material = true
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -231,6 +253,7 @@ show_percentage = false
 script = ExtResource("24_msiel")
 
 [node name="CurrentWordDisplay" type="Label" parent="HUD"]
+use_parent_material = true
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -251,47 +274,72 @@ script = ExtResource("28_2ckv8")
 [node name="GameOverPanel" type="PanelContainer" parent="HUD"]
 unique_name_in_owner = true
 visible = false
+use_parent_material = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -141.0
+offset_top = -108.0
+offset_right = 141.0
+offset_bottom = 108.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("10_6mt2a")
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/GameOverPanel"]
+use_parent_material = true
+clip_contents = true
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+size_flags_vertical = 0
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/GameOverPanel/MarginContainer"]
+use_parent_material = true
 layout_mode = 2
+theme_override_constants/separation = 12
 alignment = 1
 
 [node name="Label" type="Label" parent="HUD/GameOverPanel/MarginContainer/VBoxContainer"]
+use_parent_material = true
 layout_mode = 2
 theme = ExtResource("10_6mt2a")
 text = "Game Over!"
+horizontal_alignment = 1
 
-[node name="RestartButton" type="Button" parent="HUD/GameOverPanel/MarginContainer/VBoxContainer"]
+[node name="HighScoresList" type="ItemList" parent="HUD/GameOverPanel/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+use_parent_material = true
 layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("10_6mt2a")
+auto_height = true
+max_columns = 2
+same_column_width = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/GameOverPanel/MarginContainer/VBoxContainer"]
+use_parent_material = true
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="RestartButton" type="Button" parent="HUD/GameOverPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+use_parent_material = true
+layout_mode = 2
+size_flags_horizontal = 4
 theme = ExtResource("10_6mt2a")
 text = "Restart"
 
-[node name="ExitButton" type="Button" parent="HUD/GameOverPanel/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="ExitButton" type="Button" parent="HUD/GameOverPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+use_parent_material = true
 layout_mode = 2
+size_flags_horizontal = 4
 theme = ExtResource("10_6mt2a")
-text = "Exit"
+text = "Return to Title"
 
 [connection signal="current_typed_word_changed" from="." to="HUD/CurrentWordDisplay" method="_on_current_word_changed"]
 [connection signal="depth_changed" from="." to="." method="_on_depth_changed"]
@@ -307,5 +355,5 @@ text = "Exit"
 [connection signal="body_exited" from="FishDespawnArea" to="FishDespawnArea" method="_on_body_exited"]
 [connection signal="fish_escaped" from="FishDespawnArea" to="." method="_on_fish_escaped"]
 [connection signal="timeout" from="DepthIncreaseTimer" to="." method="_on_depth_increase_timer_timeout"]
-[connection signal="pressed" from="HUD/GameOverPanel/MarginContainer/VBoxContainer/RestartButton" to="." method="enter_state" binds= [2]]
-[connection signal="pressed" from="HUD/GameOverPanel/MarginContainer/VBoxContainer/ExitButton" to="." method="return_to_title_screen"]
+[connection signal="pressed" from="HUD/GameOverPanel/MarginContainer/VBoxContainer/HBoxContainer/RestartButton" to="." method="enter_state" binds= [2]]
+[connection signal="pressed" from="HUD/GameOverPanel/MarginContainer/VBoxContainer/HBoxContainer/ExitButton" to="." method="return_to_title_screen"]
