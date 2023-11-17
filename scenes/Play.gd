@@ -12,10 +12,10 @@ signal entered_state(new_state: GameStates)
 @export var max_fish_net_power: int = 100
 @export var mermaid_appearance_depth: int = 2 # Which depth does the mermaid appear
 @export var erase_cost: int = 5 # The fish net cost when performing an erase. 
+@export var initial_depth_timer_wait_time: float = 15.0
 
 enum GameStates {
 	TRANSITIONING,
-	GAME_START,
 	GAME_PAUSED,
 	GAME_NORMAL,
 	GAME_MERMAID,
@@ -59,6 +59,10 @@ func enter_state(next_state: GameStates) -> void:
 			current_typed_word = ""
 		GameStates.GAME_MERMAID:
 			current_typed_word = ""
+		GameStates.GAME_OVER:
+			save_high_scores()
+			%Spawner.enter_state(Spawner.SpawnerState.SPAWNER_GAME_OVER)
+			%GameOverPanel.visible = true
 		_:
 			pass
 	current_state = next_state
@@ -71,6 +75,15 @@ func exit_state(exiting_state: GameStates) -> void:
 	match exiting_state:
 		GameStates.GAME_NORMAL:
 			%DepthIncreaseTimer.stop()
+		GameStates.GAME_OVER:
+			# Reset values
+			score = 0
+			fish_net_power = 0
+			lives = 3
+			depth = 0
+			%Spawner.enter_state(Spawner.SpawnerState.SPAWNER_NORMAL)
+			$DepthIncreaseTimer.wait_time = initial_depth_timer_wait_time
+			%GameOverPanel.visible = false
 		_:
 			pass
 	return
@@ -88,7 +101,9 @@ func _process(_delta):
 func _input(event):
 	match current_state:
 		GameStates.GAME_OVER:
-			return
+			pass
+		GameStates.TRANSITIONING:
+			pass
 		_:
 			if event is InputEventKey:
 				event = event as InputEventKey
@@ -150,9 +165,7 @@ func _on_lives_changed(new_lives: int) -> void:
 		_:
 			var all_lives_lost = new_lives <= 0
 			if all_lives_lost:
-				save_high_scores()
 				enter_state(GameStates.GAME_OVER)
-				get_tree().paused = true
 
 func _on_depth_changed(new_depth) -> void:
 	match current_state:
@@ -218,3 +231,7 @@ func save_high_scores() -> void:
 	for i in range(len(high_scores)):
 		save_file.store_pascal_string(high_scores[i]["player_name"])
 		save_file.store_64((high_scores[i]["player_score"]))
+
+
+func return_to_title_screen():
+	get_tree().change_scene_to_file("res://scenes/Menu.tscn")

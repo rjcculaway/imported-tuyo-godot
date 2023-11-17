@@ -41,7 +41,7 @@ func spawn_fishes() -> void:
 		parent.connect("current_typed_word_changed", typeable_component._on_current_word_changed)
 		fish_component.connect("fish_caught", parent._on_fish_caught)
 
-		$ActiveFishes.add_child.call_deferred(new_fish)
+		$ActiveFishes.add_child(new_fish)
 	return
 
 func spawn_mermaid() -> void:
@@ -51,7 +51,7 @@ func spawn_mermaid() -> void:
 	mermaid.position = (get_node('%MermaidSpawnPoint') as Marker2D).position
 	mermaid.connect(&"mermaid_over", parent.enter_state.bind(Play.GameStates.GAME_NORMAL))
 	mermaid.connect(&"spawn_bubble", spawn_bubble)
-	$ActiveFishes.add_child.call_deferred(mermaid)
+	$ActiveFishes.add_child(mermaid)
 
 func spawn_bubble(mermaid_position: Vector2) -> void:
 	var parent: Play = get_parent()
@@ -65,7 +65,7 @@ func spawn_bubble(mermaid_position: Vector2) -> void:
 	parent.connect("current_typed_word_changed", typeable_component._on_current_word_changed)
 	bubble.connect(&"bubble_popped", parent._on_bubble_popped)
 
-	$ActiveFishes.add_child.call_deferred(bubble)
+	$ActiveFishes.add_child(bubble)
 	return
 
 func _on_spawn_timer_timeout():
@@ -81,7 +81,6 @@ func enter_state(next_state: SpawnerState) -> void:
 	match next_state:
 		SpawnerState.SPAWNER_NORMAL:
 			%SpawnTimer.start()
-			spawn_fishes()
 		SpawnerState.SPAWNER_MERMAID:
 			for fish in get_tree().get_nodes_in_group(FISHES_GROUP):
 				var fish_component: Fish = fish.get_node_or_null("Fish")

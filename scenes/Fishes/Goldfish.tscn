@@ -12,6 +12,7 @@ script = ExtResource("1_78amp")
 
 [node name="Fish" parent="." node_paths=PackedStringArray("typeable") instance=ExtResource("3_2mh2d")]
 unique_name_in_owner = true
+collision_mask = 0
 typeable = NodePath("Typeable")
 base_point_value = 1
 max_velocity_multiplier = 1.15

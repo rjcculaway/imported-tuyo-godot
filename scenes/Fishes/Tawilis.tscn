@@ -12,6 +12,8 @@ polygon = PackedVector2Array(-73, -11, -56, -16, -30, -8, -7, -9, 25, -5, 45, -3
 script = ExtResource("1_1xy3q")
 
 [node name="Fish" parent="." node_paths=PackedStringArray("typeable") instance=ExtResource("3_84kpg")]
+unique_name_in_owner = true
+collision_mask = 0
 typeable = NodePath("Typeable")
 fish_size = 2
 base_point_value = 5
@@ -22,13 +24,14 @@ sprite_speed = 0.25
 
 [node name="Sprite2D" parent="Fish" index="0"]
 texture = ExtResource("2_qpsyh")
-frame = 1
+frame = 2
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Fish/Sprite2D" index="0"]
 modulate = Color(1, 1, 1, 0)
 occluder = SubResource("OccluderPolygon2D_k7i86")
 
 [node name="Typeable" parent="Fish" instance=ExtResource("1_vhnt5")]
+unique_name_in_owner = true
 position = Vector2(0, -4)
 
 [editable path="Fish"]

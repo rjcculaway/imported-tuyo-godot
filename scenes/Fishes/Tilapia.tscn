@@ -12,6 +12,8 @@ polygon = PackedVector2Array(-84, -3, -61, -6, -30, -8, -7, -9, 25, -5, 44, 1, 7
 script = ExtResource("1_tsq4h")
 
 [node name="Fish" parent="." node_paths=PackedStringArray("typeable") instance=ExtResource("3_0li77")]
+unique_name_in_owner = true
+collision_mask = 0
 typeable = NodePath("Typeable")
 fish_size = 1
 base_point_value = 3
@@ -22,7 +24,6 @@ sprite_speed = 0.25
 
 [node name="Sprite2D" parent="Fish" index="0"]
 texture = ExtResource("2_uk7h7")
-frame = 2
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Fish/Sprite2D" index="0"]
 modulate = Color(1, 1, 1, 0)

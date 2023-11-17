@@ -39,7 +39,6 @@ states/swimming/position = Vector2(457, 100)
 transitions = ["Start", "swimming", SubResource("AnimationNodeStateMachineTransition_u52rj")]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_nfubd"]
-graph_offset = Vector2(-657, 49)
 nodes/Add2/node = SubResource("AnimationNodeAdd2_inbvs")
 nodes/Add2/position = Vector2(-200, 120)
 nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_e4agt")
@@ -108,10 +107,10 @@ _data = {
 }
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_yviul"]
-polygon = PackedVector2Array(-6, -47.1174, 28, -43.4631, 45, -30.5652, 63, -14.5227, 65, 14.4558, 57, 52.4616, 20, 51.2277, -54, 49.3467, -26, -29.0458)
+polygon = PackedVector2Array(22, -33.8452, 28, -43.4631, 48, -31.8452, 52, -18.8452, 63, -14.5227, 61, 14.1548, 59, 43.1548, 43, 42.1548, 20, 8.15485, 22, -10.8452, 37, -23.8452)
 
 [node name="Shane" type="Sprite2D" node_paths=PackedStringArray("animation_tree")]
-position = Vector2(64, 97.1331)
+position = Vector2(64, 112.372)
 texture = ExtResource("1_pyrrf")
 centered = false
 offset = Vector2(0, -72)

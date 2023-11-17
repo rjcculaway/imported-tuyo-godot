@@ -92,7 +92,7 @@ region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
-position = Vector2(64, 336.892)
+position = Vector2(64, 427.108)
 
 [node name="Spawner" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -139,6 +139,11 @@ script = ExtResource("12_14qre")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FishDespawnArea"]
 shape = SubResource("SegmentShape2D_o50xx")
 one_way_collision_margin = 0.0
+
+[node name="DepthIncreaseTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 15.0
+autostart = true
 
 [node name="HUD" type="Control" parent="."]
 layout_mode = 3
@@ -243,10 +248,50 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("28_2ckv8")
 
-[node name="DepthIncreaseTimer" type="Timer" parent="."]
+[node name="GameOverPanel" type="PanelContainer" parent="HUD"]
 unique_name_in_owner = true
-wait_time = 15.0
-autostart = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("10_6mt2a")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/GameOverPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/GameOverPanel/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="HUD/GameOverPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("10_6mt2a")
+text = "Game Over!"
+
+[node name="RestartButton" type="Button" parent="HUD/GameOverPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("10_6mt2a")
+text = "Restart"
+
+[node name="ExitButton" type="Button" parent="HUD/GameOverPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("10_6mt2a")
+text = "Exit"
 
 [connection signal="current_typed_word_changed" from="." to="HUD/CurrentWordDisplay" method="_on_current_word_changed"]
 [connection signal="depth_changed" from="." to="." method="_on_depth_changed"]
@@ -262,3 +307,5 @@ autostart = true
 [connection signal="body_exited" from="FishDespawnArea" to="FishDespawnArea" method="_on_body_exited"]
 [connection signal="fish_escaped" from="FishDespawnArea" to="." method="_on_fish_escaped"]
 [connection signal="timeout" from="DepthIncreaseTimer" to="." method="_on_depth_increase_timer_timeout"]
+[connection signal="pressed" from="HUD/GameOverPanel/MarginContainer/VBoxContainer/RestartButton" to="." method="enter_state" binds= [2]]
+[connection signal="pressed" from="HUD/GameOverPanel/MarginContainer/VBoxContainer/ExitButton" to="." method="return_to_title_screen"]

@@ -1,6 +1,30 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://beone4616rq8g"]
+[gd_resource type="Theme" load_steps=16 format=3 uid="uid://beone4616rq8g"]
 
+[ext_resource type="Texture2D" uid="uid://bjampy0idj844" path="res://assets/ui/btn.png" id="1_1or2b"]
 [ext_resource type="FontFile" uid="uid://pqnh7qvgpyub" path="res://assets/fonts/savior/Savior1.ttf" id="1_f03vb"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qu2mq"]
+texture = ExtResource("1_1or2b")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vk6fa"]
+texture = ExtResource("1_1or2b")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+modulate_color = Color(0.784314, 0.784314, 0.784314, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3f4vg"]
+texture = ExtResource("1_1or2b")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+modulate_color = Color(0.501961, 0.501961, 0.501961, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i3avi"]
 
@@ -25,7 +49,31 @@ gradient = SubResource("Gradient_37bca")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b1dup"]
 texture = SubResource("GradientTexture2D_duut4")
 
+[sub_resource type="Gradient" id="Gradient_l4e47"]
+interpolation_mode = 2
+interpolation_color_space = 2
+colors = PackedColorArray(0, 0.482353, 0.729412, 0.490196, 0.156863, 0.364706, 0.576471, 0.501961)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_if86s"]
+gradient = SubResource("Gradient_l4e47")
+width = 256
+height = 256
+fill = 1
+metadata/_snap_enabled = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ecg86"]
+texture = SubResource("GradientTexture2D_if86s")
+
 [resource]
+Button/colors/font_color = Color(0.278431, 0.160784, 0.0431373, 1)
+Button/colors/font_focus_color = Color(0.278431, 0.160784, 0.0431373, 1)
+Button/colors/font_hover_color = Color(0.278431, 0.160784, 0.0431373, 1)
+Button/colors/font_hover_pressed_color = Color(0.278431, 0.160784, 0.0431373, 1)
+Button/font_sizes/font_size = 32
+Button/fonts/font = ExtResource("1_f03vb")
+Button/styles/hover = SubResource("StyleBoxTexture_qu2mq")
+Button/styles/normal = SubResource("StyleBoxTexture_vk6fa")
+Button/styles/pressed = SubResource("StyleBoxTexture_3f4vg")
 FishNetBar/base_type = &"ProgressBar"
 FishNetBar/styles/background = SubResource("StyleBoxFlat_i3avi")
 FishNetBar/styles/fill = SubResource("StyleBoxTexture_se632")
@@ -33,6 +81,7 @@ Label/font_sizes/font_size = 48
 Label/fonts/font = ExtResource("1_f03vb")
 MermaidBar/base_type = &"ProgressBar"
 MermaidBar/styles/fill = SubResource("StyleBoxTexture_b1dup")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_ecg86")
 TypeableWord/base_type = &"RichTextLabel"
 TypeableWord/font_sizes/normal_font_size = 32
 TypeableWord/fonts/normal_font = ExtResource("1_f03vb")
