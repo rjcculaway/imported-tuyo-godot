@@ -131,10 +131,10 @@ script = ExtResource("4_p1hvh")
 
 [node name="BubbleAnimationPlayer" type="AnimationPlayer" parent="BubbleSprite"]
 unique_name_in_owner = true
-speed_scale = 0.5
 libraries = {
 "": SubResource("AnimationLibrary_c42dy")
 }
+speed_scale = 0.5
 
 [node name="FloatingAnimationPlayer" type="AnimationPlayer" parent="BubbleSprite"]
 libraries = {

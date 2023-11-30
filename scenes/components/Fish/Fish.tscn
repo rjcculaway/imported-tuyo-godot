@@ -8,29 +8,6 @@
 radius = 28.0
 height = 152.0
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c3iah"]
-animation = &"fish_idle"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ddtpt"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_g4xl1"]
-states/Start/position = Vector2(211, 100)
-states/fish_idle/node = SubResource("AnimationNodeAnimation_c3iah")
-states/fish_idle/position = Vector2(409, 100)
-transitions = ["Start", "fish_idle", SubResource("AnimationNodeStateMachineTransition_ddtpt")]
-graph_offset = Vector2(-78, -64)
-
-[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_4xcpv"]
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_yn0dg"]
-graph_offset = Vector2(-414, -5)
-nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_g4xl1")
-nodes/StateMachine/position = Vector2(-220, 100)
-nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_4xcpv")
-nodes/TimeScale/position = Vector2(60, 120)
-node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"StateMachine"]
-
 [sub_resource type="Animation" id="Animation_1bxg6"]
 resource_name = "fish_idle"
 length = 0.4
@@ -53,6 +30,29 @@ _data = {
 "fish_idle": SubResource("Animation_1bxg6")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c3iah"]
+animation = &"fish_idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ddtpt"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_g4xl1"]
+states/Start/position = Vector2(211, 100)
+states/fish_idle/node = SubResource("AnimationNodeAnimation_c3iah")
+states/fish_idle/position = Vector2(409, 100)
+transitions = ["Start", "fish_idle", SubResource("AnimationNodeStateMachineTransition_ddtpt")]
+graph_offset = Vector2(-78, -64)
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_4xcpv"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_yn0dg"]
+graph_offset = Vector2(-414, -5)
+nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_g4xl1")
+nodes/StateMachine/position = Vector2(-220, 100)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_4xcpv")
+nodes/TimeScale/position = Vector2(60, 120)
+node_connections = [&"TimeScale", 0, &"StateMachine", &"output", 0, &"TimeScale"]
+
 [node name="Fish" type="CharacterBody2D"]
 script = ExtResource("1_lgeu0")
 
@@ -67,9 +67,12 @@ shape = SubResource("CapsuleShape2D_vjghu")
 
 [node name="FishAnimationTree" type="AnimationTree" parent="."]
 unique_name_in_owner = true
+root_node = NodePath("%FishAnimationTree/..")
+libraries = {
+"": SubResource("AnimationLibrary_d7326")
+}
 tree_root = SubResource("AnimationNodeBlendTree_yn0dg")
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/TimeScale/scale = 0.25
 script = ExtResource("3_nf0hk")
 

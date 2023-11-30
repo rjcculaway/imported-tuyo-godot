@@ -63,7 +63,7 @@ curve = SubResource("Curve2D_13ppp")
 
 [node name="MermaidPathFollow" type="PathFollow2D" parent="MermaidPath"]
 unique_name_in_owner = true
-position = Vector2(-30.7478, 194.991)
+position = Vector2(-30.7479, 194.991)
 rotation = -2.35619
 progress = 920.531
 rotates = false
@@ -105,9 +105,11 @@ libraries = {
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_1ppje")
+}
 tree_root = SubResource("AnimationNodeStateMachine_2ckmi")
 anim_player = NodePath("../AnimationPlayer")
-active = true
 
 [node name="MermaidTimer" type="Timer" parent="."]
 unique_name_in_owner = true

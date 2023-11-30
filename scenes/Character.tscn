@@ -4,52 +4,6 @@
 [ext_resource type="Script" path="res://scenes/ShaneSprite.gd" id="2_343f5"]
 [ext_resource type="Texture2D" uid="uid://c6uaxvu4l6e17" path="res://assets/graphics/bubble.png" id="3_arvtt"]
 
-[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_inbvs"]
-
-[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_e4agt"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2lsb1"]
-animation = &"floating"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cvpr5"]
-animation = &"landing"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yqfbk"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m7c6y"]
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_d413b"]
-states/floating/node = SubResource("AnimationNodeAnimation_2lsb1")
-states/floating/position = Vector2(501, 100)
-states/landing/node = SubResource("AnimationNodeAnimation_cvpr5")
-states/landing/position = Vector2(344, 100)
-transitions = ["Start", "landing", SubResource("AnimationNodeStateMachineTransition_yqfbk"), "landing", "floating", SubResource("AnimationNodeStateMachineTransition_m7c6y")]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pnyhn"]
-animation = &"swimming"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u52rj"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_d1c04"]
-states/swimming/node = SubResource("AnimationNodeAnimation_pnyhn")
-states/swimming/position = Vector2(457, 100)
-transitions = ["Start", "swimming", SubResource("AnimationNodeStateMachineTransition_u52rj")]
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_nfubd"]
-nodes/Add2/node = SubResource("AnimationNodeAdd2_inbvs")
-nodes/Add2/position = Vector2(-200, 120)
-nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_e4agt")
-nodes/TimeScale/position = Vector2(80, 140)
-nodes/movement/node = SubResource("AnimationNodeStateMachine_d413b")
-nodes/movement/position = Vector2(-500, 60)
-nodes/sprite_anim/node = SubResource("AnimationNodeStateMachine_d1c04")
-nodes/sprite_anim/position = Vector2(-500, 200)
-node_connections = [&"output", 0, &"TimeScale", &"Add2", 0, &"movement", &"Add2", 1, &"sprite_anim", &"TimeScale", 0, &"Add2"]
-
 [sub_resource type="Animation" id="Animation_bglmf"]
 resource_name = "floating"
 length = 3.0
@@ -107,6 +61,52 @@ _data = {
 "swimming": SubResource("Animation_aapim")
 }
 
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_inbvs"]
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_e4agt"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2lsb1"]
+animation = &"floating"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cvpr5"]
+animation = &"landing"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yqfbk"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m7c6y"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_d413b"]
+states/floating/node = SubResource("AnimationNodeAnimation_2lsb1")
+states/floating/position = Vector2(501, 100)
+states/landing/node = SubResource("AnimationNodeAnimation_cvpr5")
+states/landing/position = Vector2(344, 100)
+transitions = ["Start", "landing", SubResource("AnimationNodeStateMachineTransition_yqfbk"), "landing", "floating", SubResource("AnimationNodeStateMachineTransition_m7c6y")]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pnyhn"]
+animation = &"swimming"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u52rj"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_d1c04"]
+states/swimming/node = SubResource("AnimationNodeAnimation_pnyhn")
+states/swimming/position = Vector2(457, 100)
+transitions = ["Start", "swimming", SubResource("AnimationNodeStateMachineTransition_u52rj")]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_nfubd"]
+nodes/Add2/node = SubResource("AnimationNodeAdd2_inbvs")
+nodes/Add2/position = Vector2(-200, 120)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_e4agt")
+nodes/TimeScale/position = Vector2(80, 140)
+nodes/movement/node = SubResource("AnimationNodeStateMachine_d413b")
+nodes/movement/position = Vector2(-500, 60)
+nodes/sprite_anim/node = SubResource("AnimationNodeStateMachine_d1c04")
+nodes/sprite_anim/position = Vector2(-500, 200)
+node_connections = [&"Add2", 0, &"movement", &"Add2", 1, &"sprite_anim", &"TimeScale", 0, &"Add2", &"output", 0, &"TimeScale"]
+
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_yviul"]
 polygon = PackedVector2Array(22, -33.8452, 28, -43.4631, 48, -31.8452, 52, -18.8452, 63, -14.5227, 61, 14.1548, 59, 43.1548, 43, 42.1548, 20, 8.15485, 22, -10.8452, 37, -23.8452)
 
@@ -122,18 +122,16 @@ particle_flag_disable_z = true
 direction = Vector3(0, -128, 0)
 spread = 180.0
 flatness = 1.0
-gravity = Vector3(0, -128, 0)
 initial_velocity_max = 64.0
 angular_velocity_min = -40.0
 angular_velocity_max = 120.0
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
+gravity = Vector3(0, -128, 0)
 scale_min = 0.25
-turbulence_enabled = true
-turbulence_noise_strength = 2.0
 anim_speed_min = 1.0
 anim_speed_max = 1.0
 anim_offset_max = 1.0
+turbulence_enabled = true
+turbulence_noise_strength = 2.0
 
 [node name="Shane" type="Sprite2D" node_paths=PackedStringArray("animation_tree")]
 z_index = 1
@@ -148,17 +146,19 @@ script = ExtResource("2_343f5")
 animation_tree = NodePath("AnimationTree")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qwkfi")
+}
 tree_root = SubResource("AnimationNodeBlendTree_nfubd")
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/Add2/add_amount = 1.0
 parameters/TimeScale/scale = 0.25
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-speed_scale = 0.5
 libraries = {
 "": SubResource("AnimationLibrary_qwkfi")
 }
+speed_scale = 0.5
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 modulate = Color(1, 1, 1, 0)

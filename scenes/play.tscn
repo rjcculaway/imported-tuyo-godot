@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://kxcvawd2q83a"]
+[gd_scene load_steps=47 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
 [ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
@@ -31,6 +31,7 @@
 [ext_resource type="Script" path="res://scenes/SpawningLine.gd" id="18_50com"]
 [ext_resource type="Script" path="res://scenes/MermaidSpawnPoint.gd" id="19_alfbp"]
 [ext_resource type="Script" path="res://scenes/FishNetBar.gd" id="24_msiel"]
+[ext_resource type="Shader" path="res://scenes/ScreenEffect.gdshader" id="26_fmkk1"]
 [ext_resource type="Script" path="res://scenes/MainGame/CurrentWordDisplay.gd" id="28_2ckv8"]
 
 [sub_resource type="Gradient" id="Gradient_vef6j"]
@@ -45,6 +46,46 @@ fill = 1
 fill_from = Vector2(0.5, 0)
 fill_to = Vector2(0.5, 0.857449)
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_oe6i2"]
+frequency = 0.0075
+fractal_type = 2
+fractal_octaves = 2
+domain_warp_type = 1
+domain_warp_amplitude = 7.95
+domain_warp_frequency = 0.02
+domain_warp_fractal_octaves = 1
+domain_warp_fractal_lacunarity = 2.855
+domain_warp_fractal_gain = 0.545
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_u0qa6"]
+in_3d_space = true
+seamless = true
+seamless_blend_skirt = 0.296
+noise = SubResource("FastNoiseLite_oe6i2")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_v2sle"]
+noise_type = 0
+seed = 6
+frequency = 0.005
+fractal_octaves = 3
+fractal_lacunarity = 2.085
+fractal_gain = 0.665
+fractal_weighted_strength = 0.1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xcg13"]
+seamless = true
+seamless_blend_skirt = 0.25
+noise = SubResource("FastNoiseLite_v2sle")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xdw4g"]
+shader = ExtResource("26_fmkk1")
+shader_parameter/wave_speed = 0.25
+shader_parameter/caustic_speed = 0.05
+shader_parameter/caustics_falloff = 0.12
+shader_parameter/distortion_falloff = 2.0
+shader_parameter/distortion_texture = SubResource("NoiseTexture2D_xcg13")
+shader_parameter/caustics_texture = SubResource("NoiseTexture2D_u0qa6")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tp4j6"]
 shader = ExtResource("2_ns3c3")
 shader_parameter/water_depth = 0.0
@@ -56,8 +97,8 @@ colors = PackedColorArray(0.219608, 0.666667, 0.635294, 1, 0.1976, 0.52, 0.36954
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_nj8hv"]
 gradient = SubResource("Gradient_4boiy")
-width = 1280
-height = 720
+width = 1380
+height = 820
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_74lwt"]
 
@@ -86,15 +127,20 @@ script = ExtResource("2_27774")
 min_underwater_light_reach = 0.8
 max_underwater_light_reach = 0.45
 
-[node name="BG" type="Sprite2D" parent="."]
+[node name="CanvasGroup" type="CanvasGroup" parent="."]
+material = SubResource("ShaderMaterial_xdw4g")
+
+[node name="BG" type="Sprite2D" parent="CanvasGroup"]
 material = SubResource("ShaderMaterial_tp4j6")
+position = Vector2(-50, -50)
 texture = SubResource("GradientTexture2D_nj8hv")
 centered = false
 script = ExtResource("3_2rk8l")
 
-[node name="UnderwaterBg" type="Sprite2D" parent="BG"]
+[node name="UnderwaterBg" type="Sprite2D" parent="CanvasGroup/BG"]
 texture_repeat = 2
 material = SubResource("CanvasItemMaterial_74lwt")
+position = Vector2(50, 50)
 texture = ExtResource("1_2g0dx")
 centered = false
 region_enabled = true
@@ -103,8 +149,8 @@ script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="." instance=ExtResource("3_ts3qv")]
 unique_name_in_owner = true
-position = Vector2(64, 351.67)
-frame = 7
+position = Vector2(64, 318.317)
+frame = 5
 
 [node name="Spawner" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -167,11 +213,15 @@ metadata/_edit_lock_ = true
 
 [node name="GameInformationContainer" type="VBoxContainer" parent="HUD"]
 use_parent_material = true
-layout_mode = 0
-offset_left = 24.0
-offset_top = 16.0
-offset_right = 161.0
-offset_bottom = 104.0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -104.0
+offset_right = 153.0
+offset_bottom = -16.0
+grow_vertical = 0
 
 [node name="PlayerDepthContainer" type="HBoxContainer" parent="HUD/GameInformationContainer"]
 use_parent_material = true
@@ -343,7 +393,7 @@ text = "Return to Title"
 
 [connection signal="current_typed_word_changed" from="." to="HUD/CurrentWordDisplay" method="_on_current_word_changed"]
 [connection signal="depth_changed" from="." to="." method="_on_depth_changed"]
-[connection signal="depth_changed" from="." to="BG" method="_on_depth_changed"]
+[connection signal="depth_changed" from="." to="CanvasGroup/BG" method="_on_depth_changed"]
 [connection signal="depth_changed" from="." to="HUD/GameInformationContainer/PlayerDepthContainer/DepthValueLabel" method="_on_depth_changed"]
 [connection signal="entered_state" from="." to="Spawner" method="_on_game_entered_state"]
 [connection signal="fish_net_power_changed" from="." to="HUD/FishNetBar" method="_on_fish_net_power_changed"]
