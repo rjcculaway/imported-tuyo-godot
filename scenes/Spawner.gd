@@ -39,6 +39,7 @@ func spawn_fishes() -> void:
 		new_fish.add_to_group("fishes", true)
 
 		parent.connect("current_typed_word_changed", typeable_component._on_current_word_changed)
+		parent.connect("activated_fish_net", fish_component._on_typed_word_same)
 		fish_component.connect("fish_caught", parent._on_fish_caught)
 
 		$ActiveFishes.add_child(new_fish)

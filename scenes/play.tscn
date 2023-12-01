@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://kxcvawd2q83a"]
+[gd_scene load_steps=54 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
 [ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
@@ -32,7 +32,9 @@
 [ext_resource type="Script" path="res://scenes/MermaidSpawnPoint.gd" id="19_alfbp"]
 [ext_resource type="Script" path="res://scenes/FishNetBar.gd" id="24_msiel"]
 [ext_resource type="Shader" path="res://scenes/ScreenEffect.gdshader" id="26_fmkk1"]
+[ext_resource type="Shader" path="res://scenes/RainbowScreenEffect.gdshader" id="27_4so5s"]
 [ext_resource type="Script" path="res://scenes/MainGame/CurrentWordDisplay.gd" id="28_2ckv8"]
+[ext_resource type="Script" path="res://scenes/RainbowEffect.gd" id="28_mbms7"]
 
 [sub_resource type="Gradient" id="Gradient_vef6j"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -44,7 +46,7 @@ height = 720
 use_hdr = true
 fill = 1
 fill_from = Vector2(0.5, 0)
-fill_to = Vector2(0.5, 0.857449)
+fill_to = Vector2(0.5, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_oe6i2"]
 frequency = 0.0075
@@ -106,19 +108,55 @@ height = 820
 b = Vector2(0, 720)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hvrs6"]
-light_mode = 1
 
-[node name="Play" type="Node2D"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2l6bh"]
+noise_type = 0
+seed = 59
+frequency = 0.0005
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_755fp"]
+seamless_blend_skirt = 0.105
+noise = SubResource("FastNoiseLite_2l6bh")
+
+[sub_resource type="Gradient" id="Gradient_jrc32"]
+interpolation_mode = 2
+interpolation_color_space = 2
+offsets = PackedFloat32Array(0, 0.166667, 0.333333, 0.5, 0.666667, 0.833333, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1.07134, 0.622635, 0.000919875, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1)
+metadata/_snap_count = 6
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mc4ei"]
+gradient = SubResource("Gradient_jrc32")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_njjs6"]
+shader = ExtResource("27_4so5s")
+shader_parameter/rainbow_opacity = 0.0
+shader_parameter/falloff = 4.755
+shader_parameter/falloff_scale = 0.91
+shader_parameter/flower_wave_speed = 0.44
+shader_parameter/color_cycle_speed = 2.5
+shader_parameter/distortion_strength = 0.0
+shader_parameter/petal_limit = 0.1
+shader_parameter/num_of_petals = 7.0
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_755fp")
+shader_parameter/rainbow_texture = SubResource("GradientTexture1D_mc4ei")
+
+[node name="Node" type="Node"]
+
+[node name="Play" type="Node2D" parent="."]
+z_as_relative = false
 texture_repeat = 2
 script = ExtResource("1_nchbe")
 mermaid_appearance_depth = 10
 
-[node name="UnderwaterLight" type="PointLight2D" parent="."]
+[node name="UnderwaterLight" type="PointLight2D" parent="Play"]
 texture_filter = 6
 position = Vector2(640, 0)
-color = Color(0.929412, 0.960784, 0.752941, 1)
-energy = 0.75
+color = Color(0.898039, 0.960784, 0.54902, 1)
+energy = 0.5
 shadow_enabled = true
+shadow_color = Color(0, 0.00784314, 0.027451, 1)
 shadow_filter = 1
 shadow_filter_smooth = 3.1
 texture = SubResource("GradientTexture2D_sd6jo")
@@ -127,17 +165,17 @@ script = ExtResource("2_27774")
 min_underwater_light_reach = 0.8
 max_underwater_light_reach = 0.45
 
-[node name="CanvasGroup" type="CanvasGroup" parent="."]
+[node name="BackgroundEffects" type="CanvasGroup" parent="Play"]
 material = SubResource("ShaderMaterial_xdw4g")
 
-[node name="BG" type="Sprite2D" parent="CanvasGroup"]
+[node name="BG" type="Sprite2D" parent="Play/BackgroundEffects"]
 material = SubResource("ShaderMaterial_tp4j6")
 position = Vector2(-50, -50)
 texture = SubResource("GradientTexture2D_nj8hv")
 centered = false
 script = ExtResource("3_2rk8l")
 
-[node name="UnderwaterBg" type="Sprite2D" parent="CanvasGroup/BG"]
+[node name="UnderwaterBg" type="Sprite2D" parent="Play/BackgroundEffects/BG"]
 texture_repeat = 2
 material = SubResource("CanvasItemMaterial_74lwt")
 position = Vector2(50, 50)
@@ -147,12 +185,12 @@ region_enabled = true
 region_rect = Rect2(0, 0, 1280, 720)
 script = ExtResource("2_yfhgu")
 
-[node name="Character" parent="." instance=ExtResource("3_ts3qv")]
+[node name="Character" parent="Play" instance=ExtResource("3_ts3qv")]
 unique_name_in_owner = true
-position = Vector2(64, 318.317)
+position = Vector2(64, 421.774)
 frame = 5
 
-[node name="Spawner" type="Node2D" parent="."]
+[node name="Spawner" type="Node2D" parent="Play"]
 unique_name_in_owner = true
 position = Vector2(1380, 0)
 script = ExtResource("4_bf7dc")
@@ -161,7 +199,7 @@ bubble_scene = ExtResource("16_74f02")
 mermaid_scene = ExtResource("16_lfdrb")
 word_bank = ExtResource("10_lst0b")
 
-[node name="SpawningLine" type="Line2D" parent="Spawner"]
+[node name="SpawningLine" type="Line2D" parent="Play/Spawner"]
 unique_name_in_owner = true
 points = PackedVector2Array(0, 0, 0, 720)
 width = 0.0
@@ -170,46 +208,65 @@ script = ExtResource("18_50com")
 spawning_pattern_preview = ExtResource("15_4x446")
 metadata/_edit_lock_ = true
 
-[node name="SpawnTimer" type="Timer" parent="Spawner"]
+[node name="SpawnTimer" type="Timer" parent="Play/Spawner"]
 unique_name_in_owner = true
 wait_time = 5.0
 autostart = true
 script = ExtResource("5_0qupf")
 
-[node name="ActiveFishes" type="Node2D" parent="Spawner"]
+[node name="ActiveFishes" type="Node2D" parent="Play/Spawner"]
 unique_name_in_owner = true
 
-[node name="MermaidSpawnPoint" type="Marker2D" parent="Spawner"]
+[node name="MermaidSpawnPoint" type="Marker2D" parent="Play/Spawner"]
 unique_name_in_owner = true
 position = Vector2(-400, 360)
 gizmo_extents = 197.5
 script = ExtResource("19_alfbp")
 
-[node name="BubbleSpawningLine" type="Line2D" parent="Spawner"]
+[node name="BubbleSpawningLine" type="Line2D" parent="Play/Spawner"]
 unique_name_in_owner = true
 points = PackedVector2Array(-1080, 360, -480, 360)
 width = 0.0
 default_color = Color(1, 1, 1, 0)
 
-[node name="FishDespawnArea" type="Area2D" parent="."]
+[node name="FishDespawnArea" type="Area2D" parent="Play"]
 script = ExtResource("12_14qre")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FishDespawnArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Play/FishDespawnArea"]
 shape = SubResource("SegmentShape2D_o50xx")
 one_way_collision_margin = 0.0
 
-[node name="DepthIncreaseTimer" type="Timer" parent="."]
+[node name="DepthIncreaseTimer" type="Timer" parent="Play"]
 unique_name_in_owner = true
 wait_time = 15.0
 autostart = true
 
 [node name="HUD" type="Control" parent="."]
+top_level = true
+clip_children = 2
+z_as_relative = false
 material = SubResource("CanvasItemMaterial_hvrs6")
+clip_contents = true
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1280.0
 offset_bottom = 720.0
 metadata/_edit_lock_ = true
+
+[node name="RainbowEffect" type="ColorRect" parent="HUD"]
+show_behind_parent = true
+clip_children = 2
+texture_filter = 4
+material = SubResource("ShaderMaterial_njjs6")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("28_mbms7")
 
 [node name="GameInformationContainer" type="VBoxContainer" parent="HUD"]
 use_parent_material = true
@@ -323,7 +380,6 @@ script = ExtResource("28_2ckv8")
 
 [node name="GameOverPanel" type="PanelContainer" parent="HUD"]
 unique_name_in_owner = true
-visible = false
 use_parent_material = true
 layout_mode = 1
 anchors_preset = 8
@@ -391,19 +447,20 @@ size_flags_horizontal = 4
 theme = ExtResource("10_6mt2a")
 text = "Return to Title"
 
-[connection signal="current_typed_word_changed" from="." to="HUD/CurrentWordDisplay" method="_on_current_word_changed"]
-[connection signal="depth_changed" from="." to="." method="_on_depth_changed"]
-[connection signal="depth_changed" from="." to="CanvasGroup/BG" method="_on_depth_changed"]
-[connection signal="depth_changed" from="." to="HUD/GameInformationContainer/PlayerDepthContainer/DepthValueLabel" method="_on_depth_changed"]
-[connection signal="entered_state" from="." to="Spawner" method="_on_game_entered_state"]
-[connection signal="fish_net_power_changed" from="." to="HUD/FishNetBar" method="_on_fish_net_power_changed"]
-[connection signal="lives_changed" from="." to="." method="_on_lives_changed"]
-[connection signal="lives_changed" from="." to="HUD/Lives" method="_on_play_lives_changed"]
-[connection signal="score_changed" from="." to="HUD/GameInformationContainer/PlayerScoreContainer/ScoreValueLabel" method="_on_score_changed"]
-[connection signal="timeout" from="Spawner/SpawnTimer" to="Spawner" method="_on_spawn_timer_timeout"]
-[connection signal="child_exiting_tree" from="Spawner/ActiveFishes" to="Spawner" method="_on_active_fishes_reduced"]
-[connection signal="body_exited" from="FishDespawnArea" to="FishDespawnArea" method="_on_body_exited"]
-[connection signal="fish_escaped" from="FishDespawnArea" to="." method="_on_fish_escaped"]
-[connection signal="timeout" from="DepthIncreaseTimer" to="." method="_on_depth_increase_timer_timeout"]
-[connection signal="pressed" from="HUD/GameOverPanel/MarginContainer/VBoxContainer/HBoxContainer/RestartButton" to="." method="enter_state" binds= [2]]
-[connection signal="pressed" from="HUD/GameOverPanel/MarginContainer/VBoxContainer/HBoxContainer/ExitButton" to="." method="return_to_title_screen"]
+[connection signal="current_typed_word_changed" from="Play" to="HUD/CurrentWordDisplay" method="_on_current_word_changed"]
+[connection signal="depth_changed" from="Play" to="Play" method="_on_depth_changed"]
+[connection signal="depth_changed" from="Play" to="Play/BackgroundEffects/BG" method="_on_depth_changed"]
+[connection signal="depth_changed" from="Play" to="HUD/GameInformationContainer/PlayerDepthContainer/DepthValueLabel" method="_on_depth_changed"]
+[connection signal="entered_state" from="Play" to="Play/Spawner" method="_on_game_entered_state"]
+[connection signal="entered_state" from="Play" to="HUD/RainbowEffect" method="_on_play_entered_state"]
+[connection signal="fish_net_power_changed" from="Play" to="HUD/FishNetBar" method="_on_fish_net_power_changed"]
+[connection signal="lives_changed" from="Play" to="Play" method="_on_lives_changed"]
+[connection signal="lives_changed" from="Play" to="HUD/Lives" method="_on_play_lives_changed"]
+[connection signal="score_changed" from="Play" to="HUD/GameInformationContainer/PlayerScoreContainer/ScoreValueLabel" method="_on_score_changed"]
+[connection signal="timeout" from="Play/Spawner/SpawnTimer" to="Play/Spawner" method="_on_spawn_timer_timeout"]
+[connection signal="child_exiting_tree" from="Play/Spawner/ActiveFishes" to="Play/Spawner" method="_on_active_fishes_reduced"]
+[connection signal="body_exited" from="Play/FishDespawnArea" to="Play/FishDespawnArea" method="_on_body_exited"]
+[connection signal="fish_escaped" from="Play/FishDespawnArea" to="Play" method="_on_fish_escaped"]
+[connection signal="timeout" from="Play/DepthIncreaseTimer" to="Play" method="_on_depth_increase_timer_timeout"]
+[connection signal="pressed" from="HUD/GameOverPanel/MarginContainer/VBoxContainer/HBoxContainer/RestartButton" to="Play" method="enter_state" binds= [2]]
+[connection signal="pressed" from="HUD/GameOverPanel/MarginContainer/VBoxContainer/HBoxContainer/ExitButton" to="Play" method="return_to_title_screen"]

@@ -6,6 +6,7 @@ signal lives_changed(lives: int)
 signal depth_changed(depth: int)
 signal score_changed(score: int)
 signal fish_net_power_changed(fish_net_power: int)
+signal activated_fish_net()
 signal entered_state(new_state: GameStates)
 
 @export var max_lives: int = 3
@@ -101,6 +102,7 @@ func exit_state(exiting_state: GameStates) -> void:
 func _ready():
 	lives = max_lives
 	enter_state(GameStates.GAME_NORMAL)
+	fish_net_power = 100
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -124,7 +126,12 @@ func _input(event):
 					if current_typed_word.length() > 0:
 						current_typed_word = ""
 						fish_net_power = max(0, fish_net_power - erase_cost)	# Erasing the currently typed word has a cost
-				
+
+				if event.is_action_pressed("activate_fish_net"):
+					if fish_net_power >= max_fish_net_power:
+						fish_net_power = 0;
+						activated_fish_net.emit()
+
 				get_viewport().set_input_as_handled()
 
 func _on_fish_caught(node: Node2D, fish_size: Fish.FishSize, base_point_value: int) -> void:

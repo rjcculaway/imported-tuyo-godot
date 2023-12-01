@@ -14,8 +14,8 @@ void fragment() {
 	vec2 caustic_scroll_uv = vec2(UV.x, fract(UV.y + TIME * caustic_speed));
 	vec3 noise_color = textureLod(distortion_texture, distorted_uv, 0.0).rgb;
 	
-	float caustics_fade = 1. - pow(length(vec2(UV.x - 0.5, UV.y)), caustics_falloff);
-	float distortion_fade = pow(length(vec2(UV.x - 0.5, UV.y)), distortion_falloff);
+	float caustics_fade = 1. - pow(length(vec2((UV.x - 0.5) * 2., UV.y)), caustics_falloff);
+	float distortion_fade = pow(length(vec2((UV.x - 0.5) * 2., UV.y)), distortion_falloff);
 	vec3 caustics_color = texture(caustics_texture, mix(caustic_scroll_uv, noise_color.rg, 0.025)).rgb * caustics_fade;
 	
 	vec3 c = textureLod(screen_texture, mix(SCREEN_UV, noise_color.rg, .025 * distortion_fade), 0.0).rgb;
