@@ -30,7 +30,7 @@ width = 1280
 height = 720
 fill = 1
 fill_from = Vector2(0.645, 0.695)
-fill_to = Vector2(1, -0.85426)
+fill_to = Vector2(1, -0.35245)
 
 [sub_resource type="Animation" id="Animation_31hmv"]
 resource_name = "sun_pulse"
@@ -238,7 +238,7 @@ texture = ExtResource("4_houf5")
 centered = false
 
 [node name="Boat" type="Node2D" parent="."]
-position = Vector2(0, 15.9997)
+position = Vector2(0, 0.82936)
 
 [node name="JC" type="Sprite2D" parent="Boat"]
 position = Vector2(660, 375)

@@ -68,10 +68,10 @@ func enter_state(next_state: GameStates) -> void:
 			# for high_score in high_scores:
 			# 	%HighScoresList.add_item(str(high_score["player_name"]), null, false)
 			# 	%HighScoresList.add_item(str(high_score["player_score"]), null, false)
-			# %Spawner.enter_state(Spawner.SpawnerState.SPAWNER_GAME_OVER)
 			
 			# %HighScoresList.set_same_column_width(false)
 			# %HighScoresList.set_same_column_width(true)
+			%Spawner.enter_state(Spawner.SpawnerState.SPAWNER_GAME_OVER)
 			%GameOverPanel.visible = true
 		_:
 			pass

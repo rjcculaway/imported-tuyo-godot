@@ -187,8 +187,8 @@ script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="Play" instance=ExtResource("3_ts3qv")]
 unique_name_in_owner = true
-position = Vector2(64, 331.812)
-frame = 4
+position = Vector2(64, 256.353)
+frame = 7
 
 [node name="Spawner" type="Node2D" parent="Play"]
 unique_name_in_owner = true
