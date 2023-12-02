@@ -53,7 +53,7 @@ var number_of_times_mermaid_appeared: int = 0;
 func enter_state(next_state: GameStates) -> void:
 	exit_state(current_state)
 	current_state = GameStates.TRANSITIONING
-	print_debug("Transitioning to state: " + GameStates.keys()[next_state])
+	# print_debug("Transitioning to state: " + GameStates.keys()[next_state])
 	match next_state:
 		GameStates.GAME_NORMAL:
 			%DepthIncreaseTimer.start()
@@ -61,27 +61,27 @@ func enter_state(next_state: GameStates) -> void:
 		GameStates.GAME_MERMAID:
 			current_typed_word = ""
 		GameStates.GAME_OVER:
-			save_high_scores()
-			var high_scores = load_high_scores()
+			# save_high_scores()
+			# var high_scores = load_high_scores()
 
-			%HighScoresList.clear()
-			for high_score in high_scores:
-				%HighScoresList.add_item(str(high_score["player_name"]), null, false)
-				%HighScoresList.add_item(str(high_score["player_score"]), null, false)
-			%Spawner.enter_state(Spawner.SpawnerState.SPAWNER_GAME_OVER)
-				
-			%HighScoresList.set_same_column_width(false)
-			%HighScoresList.set_same_column_width(true)
+			# %HighScoresList.clear()
+			# for high_score in high_scores:
+			# 	%HighScoresList.add_item(str(high_score["player_name"]), null, false)
+			# 	%HighScoresList.add_item(str(high_score["player_score"]), null, false)
+			# %Spawner.enter_state(Spawner.SpawnerState.SPAWNER_GAME_OVER)
+			
+			# %HighScoresList.set_same_column_width(false)
+			# %HighScoresList.set_same_column_width(true)
 			%GameOverPanel.visible = true
 		_:
 			pass
 	current_state = next_state
 	entered_state.emit(current_state)
-	print_debug("Entered state: " + GameStates.keys()[current_state])
+	# print_debug("Entered state: " + GameStates.keys()[current_state])
 	return
 
 func exit_state(exiting_state: GameStates) -> void:
-	print_debug("Exiting state: " + GameStates.keys()[exiting_state])
+	# print_debug("Exiting state: " + GameStates.keys()[exiting_state])
 	match exiting_state:
 		GameStates.GAME_NORMAL:
 			%DepthIncreaseTimer.stop()
@@ -102,8 +102,6 @@ func exit_state(exiting_state: GameStates) -> void:
 func _ready():
 	lives = max_lives
 	enter_state(GameStates.GAME_NORMAL)
-	fish_net_power = 100
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -152,7 +150,7 @@ func _on_fish_caught(node: Node2D, fish_size: Fish.FishSize, base_point_value: i
 			#warning-ignore:integer_division
 			fish_net_power += (1 + roundi(float(base_point_value) / 2))
 
-			print_debug("Fish (%s) was caught for %d point(s)." % [Fish.FishSize.keys()[fish_size], base_point_value])
+			# print_debug("Fish (%s) was caught for %d point(s)." % [Fish.FishSize.keys()[fish_size], base_point_value])
 			
 			return
 
@@ -181,7 +179,7 @@ func _on_depth_increase_timer_timeout() -> void:
 func _on_fish_escaped() -> void:
 	match current_state:
 		GameStates.GAME_NORMAL:
-			print_debug("Typeable escaped!")
+			# print_debug("Typeable escaped!")
 			lives -= 1
 		_:
 			pass
@@ -222,7 +220,7 @@ func load_high_scores() -> Array[Dictionary]:
 			"player_score": player_score
 		})
 	
-	print_debug(high_scores)
+	# print_debug(high_scores)
 	
 	return high_scores
 
@@ -245,12 +243,12 @@ func save_high_scores() -> void:
 		var save_game_rename = DirAccess.rename_absolute("user://high_scores.dat", "user://high_scores.dat.bak")
 
 		if save_game_rename != OK:
-			print_debug("Creating backup file for saves failed. Stopping save.")
+			# print_debug("Creating backup file for saves failed. Stopping save.")
 			return
 	
 	var save_file = FileAccess.open("user://high_scores.dat", FileAccess.WRITE)
 	if FileAccess.get_open_error() != OK:
-		print_debug("Save file creation failed. Stopping save.")
+		# print_debug("Save file creation failed. Stopping save.")
 		DirAccess.rename_absolute("user://high_scores.dat.bak", "user://high_scores.dat")
 		return
 

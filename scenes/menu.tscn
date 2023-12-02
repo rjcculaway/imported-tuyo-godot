@@ -1,12 +1,23 @@
-[gd_scene load_steps=13 format=3 uid="uid://b05so8o1vn4du"]
+[gd_scene load_steps=26 format=3 uid="uid://b05so8o1vn4du"]
 
+[ext_resource type="Shader" path="res://scenes/MenuSkyShader.gdshader" id="1_eo3gq"]
 [ext_resource type="Texture2D" uid="uid://opuq7itya7rp" path="res://assets/graphics/jc.png" id="2_547os"]
 [ext_resource type="Texture2D" uid="uid://bbcs3ley5xa4w" path="res://assets/graphics/shane.png" id="3_3x338"]
 [ext_resource type="Texture2D" uid="uid://dgswdw4uwd1co" path="res://assets/graphics/mountains.png" id="4_houf5"]
+[ext_resource type="Shader" path="res://scenes/MenuWater.gdshader" id="5_64vj7"]
 [ext_resource type="Texture2D" uid="uid://ck0i8cmlbuvtw" path="res://assets/graphics/boat.png" id="5_ygr4x"]
+[ext_resource type="Theme" uid="uid://beone4616rq8g" path="res://assets/themes/theme.tres" id="6_cpjxn"]
 [ext_resource type="Texture2D" uid="uid://dxegyn6sst2lh" path="res://assets/graphics/water.png" id="6_y2te3"]
+[ext_resource type="Script" path="res://scenes/StartGameButton.gd" id="7_dywwy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m5tbx"]
+shader = ExtResource("1_eo3gq")
+shader_parameter/star_color = Color(1, 1, 0.572549, 1)
+shader_parameter/star_intensity = 0.286
+shader_parameter/star_falloff = 1.015
+shader_parameter/num_of_stars = 12
+shader_parameter/x_offset = -0.327
+shader_parameter/y_offset = -0.398
 
 [sub_resource type="Gradient" id="Gradient_pyu26"]
 interpolation_mode = 2
@@ -19,12 +30,12 @@ width = 1280
 height = 720
 fill = 1
 fill_from = Vector2(0.645, 0.695)
-fill_to = Vector2(1, -0.40029)
+fill_to = Vector2(1, -0.85426)
 
 [sub_resource type="Animation" id="Animation_31hmv"]
 resource_name = "sun_pulse"
 length = 10.0
-loop_mode = 1
+loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -43,6 +54,159 @@ _data = {
 "sun_pulse": SubResource("Animation_31hmv")
 }
 
+[sub_resource type="Animation" id="Animation_ftpxc"]
+resource_name = "blink"
+length = 4.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 2, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2kkin"]
+_data = {
+"blink": SubResource("Animation_ftpxc")
+}
+
+[sub_resource type="Animation" id="Animation_8co4u"]
+resource_name = "blink"
+length = 7.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 2, 1, 0]
+}
+
+[sub_resource type="Animation" id="Animation_h0lvf"]
+resource_name = "RESET"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(843, 447)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:z_index")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ffu68"]
+resource_name = "jump"
+length = 1.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.9, 1.8),
+"transitions": PackedFloat32Array(1, 1, 0.517633, 1),
+"update": 0,
+"values": [Vector2(875, 447), Vector2(915, 375), Vector2(1100, 375), Vector2(1100, 1000)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:z_index")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 2,
+"values": [0, -1]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../StartGameButton")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.8),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"start_game"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_usooe"]
+_data = {
+"RESET": SubResource("Animation_h0lvf"),
+"blink": SubResource("Animation_8co4u"),
+"jump": SubResource("Animation_ffu68")
+}
+
+[sub_resource type="Animation" id="Animation_w2jgg"]
+resource_name = "swaying"
+length = 10.0
+loop_mode = 2
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5, 10),
+"transitions": PackedFloat32Array(0.25, 0.5, 1.75),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 16), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tiovt"]
+_data = {
+"swaying": SubResource("Animation_w2jgg")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nbmdg"]
+shader = ExtResource("5_64vj7")
+
 [sub_resource type="Gradient" id="Gradient_8doje"]
 interpolation_mode = 1
 offsets = PackedFloat32Array(0)
@@ -53,10 +217,6 @@ gradient = SubResource("Gradient_8doje")
 width = 1280
 
 [node name="Main" type="Node"]
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="SkyBackground" type="Sprite2D" parent="."]
 z_index = -1
@@ -70,18 +230,6 @@ libraries = {
 "": SubResource("AnimationLibrary_nwdmf")
 }
 
-[node name="JC" type="Sprite2D" parent="."]
-position = Vector2(660, 375)
-texture = ExtResource("2_547os")
-centered = false
-hframes = 4
-
-[node name="Shane" type="Sprite2D" parent="."]
-position = Vector2(843, 447)
-texture = ExtResource("3_3x338")
-hframes = 4
-vframes = 2
-
 [node name="Mountains" type="Sprite2D" parent="."]
 z_index = -1
 position = Vector2(0, 180)
@@ -89,12 +237,45 @@ scale = Vector2(1, 1.5)
 texture = ExtResource("4_houf5")
 centered = false
 
-[node name="Boat" type="Sprite2D" parent="."]
+[node name="Boat" type="Node2D" parent="."]
+position = Vector2(0, 15.9997)
+
+[node name="JC" type="Sprite2D" parent="Boat"]
+position = Vector2(660, 375)
+texture = ExtResource("2_547os")
+centered = false
+hframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Boat/JC"]
+libraries = {
+"": SubResource("AnimationLibrary_2kkin")
+}
+
+[node name="Shane" type="Sprite2D" parent="Boat"]
+position = Vector2(843, 447)
+texture = ExtResource("3_3x338")
+hframes = 4
+vframes = 2
+
+[node name="ShaneAnimationPlayer" type="AnimationPlayer" parent="Boat/Shane"]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_usooe")
+}
+
+[node name="Boat" type="Sprite2D" parent="Boat"]
 position = Vector2(516, 444)
 texture = ExtResource("5_ygr4x")
 centered = false
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Boat"]
+libraries = {
+"": SubResource("AnimationLibrary_tiovt")
+}
+
 [node name="Water" type="Sprite2D" parent="."]
+texture_filter = 4
+material = SubResource("ShaderMaterial_nbmdg")
 position = Vector2(0, 309)
 texture = ExtResource("6_y2te3")
 centered = false
@@ -109,3 +290,23 @@ position = Vector2(0, 347)
 scale = Vector2(1, 64)
 texture = SubResource("GradientTexture1D_1fjjq")
 centered = false
+
+[node name="StartGameButton" type="Button" parent="."]
+use_parent_material = true
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -225.0
+offset_top = -122.0
+offset_right = -80.0
+offset_bottom = -56.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+theme = ExtResource("6_cpjxn")
+text = "Start"
+script = ExtResource("7_dywwy")
+
+[connection signal="pressed" from="StartGameButton" to="StartGameButton" method="_on_pressed"]

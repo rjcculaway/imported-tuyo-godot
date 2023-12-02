@@ -1,14 +1,14 @@
 [gd_scene load_steps=54 format=3 uid="uid://kxcvawd2q83a"]
 
 [ext_resource type="Texture2D" uid="uid://d11q11ylv3jsh" path="res://assets/graphics/underwater_bg.png" id="1_2g0dx"]
-[ext_resource type="Script" path="res://scenes/Play.gd" id="1_nchbe"]
-[ext_resource type="Script" path="res://scenes/UnderwaterLight.gd" id="2_27774"]
-[ext_resource type="Shader" path="res://scenes/WaterLevelShader.gdshader" id="2_ns3c3"]
-[ext_resource type="Script" path="res://scenes/UnderwaterBg.gd" id="2_yfhgu"]
-[ext_resource type="Script" path="res://scenes/Background.gd" id="3_2rk8l"]
-[ext_resource type="PackedScene" uid="uid://c0p32h8a6l2df" path="res://scenes/Character.tscn" id="3_ts3qv"]
-[ext_resource type="Script" path="res://scenes/Spawner.gd" id="4_bf7dc"]
-[ext_resource type="Script" path="res://scenes/SpawnTimer.gd" id="5_0qupf"]
+[ext_resource type="Script" path="res://scenes/MainGame/Play.gd" id="1_nchbe"]
+[ext_resource type="Script" path="res://scenes/MainGame/UnderwaterLight.gd" id="2_27774"]
+[ext_resource type="Shader" path="res://scenes/MainGame/WaterLevelShader.gdshader" id="2_ns3c3"]
+[ext_resource type="Script" path="res://scenes/MainGame/UnderwaterBg.gd" id="2_yfhgu"]
+[ext_resource type="Script" path="res://scenes/MainGame/Background.gd" id="3_2rk8l"]
+[ext_resource type="PackedScene" uid="uid://c0p32h8a6l2df" path="res://scenes/MainGame/Character.tscn" id="3_ts3qv"]
+[ext_resource type="Script" path="res://scenes/MainGame/Spawner.gd" id="4_bf7dc"]
+[ext_resource type="Script" path="res://scenes/MainGame/SpawnTimer.gd" id="5_0qupf"]
 [ext_resource type="Resource" uid="uid://bi880134s35b8" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_001.tres" id="6_3u7q4"]
 [ext_resource type="Resource" uid="uid://d0mcusxlvyitg" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_002.tres" id="7_nx0p3"]
 [ext_resource type="Resource" uid="uid://cy6pke3gr3qf0" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_003.tres" id="8_0m0bg"]
@@ -18,7 +18,7 @@
 [ext_resource type="Resource" uid="uid://bd25kk3mx2rnd" path="res://assets/words/word_bank.tres" id="10_lst0b"]
 [ext_resource type="Script" path="res://scenes/MainGame/DepthValueLabel.gd" id="11_4uihv"]
 [ext_resource type="Resource" uid="uid://bo8fi356w1bfr" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_006.tres" id="11_rkp8w"]
-[ext_resource type="Script" path="res://scenes/FishDespawnArea.gd" id="12_14qre"]
+[ext_resource type="Script" path="res://scenes/MainGame/FishDespawnArea.gd" id="12_14qre"]
 [ext_resource type="Script" path="res://scenes/MainGame/ScoreValueLabel.gd" id="12_t5unn"]
 [ext_resource type="Resource" uid="uid://bs22btlu4xoy8" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_007.tres" id="12_tbx04"]
 [ext_resource type="Script" path="res://scenes/MainGame/LivesDisplay.gd" id="13_3does"]
@@ -28,13 +28,13 @@
 [ext_resource type="Resource" uid="uid://bib5bx6lhpwp0" path="res://assets/game_parameters/spawning_patterns/spawning_pattern_010.tres" id="15_4x446"]
 [ext_resource type="PackedScene" uid="uid://bxwf356128q6k" path="res://scenes/Fishes/Bubble.tscn" id="16_74f02"]
 [ext_resource type="PackedScene" uid="uid://deifdrtbep5qh" path="res://scenes/Fishes/Mermaid/Mermaid.tscn" id="16_lfdrb"]
-[ext_resource type="Script" path="res://scenes/SpawningLine.gd" id="18_50com"]
-[ext_resource type="Script" path="res://scenes/MermaidSpawnPoint.gd" id="19_alfbp"]
-[ext_resource type="Script" path="res://scenes/FishNetBar.gd" id="24_msiel"]
-[ext_resource type="Shader" path="res://scenes/ScreenEffect.gdshader" id="26_fmkk1"]
-[ext_resource type="Shader" path="res://scenes/RainbowScreenEffect.gdshader" id="27_4so5s"]
+[ext_resource type="Script" path="res://scenes/MainGame/SpawningLine.gd" id="18_50com"]
+[ext_resource type="Script" path="res://scenes/MainGame/MermaidSpawnPoint.gd" id="19_alfbp"]
+[ext_resource type="Script" path="res://scenes/MainGame/FishNetBar.gd" id="24_msiel"]
+[ext_resource type="Shader" path="res://scenes/MainGame/ScreenEffect.gdshader" id="26_fmkk1"]
+[ext_resource type="Shader" path="res://scenes/MainGame/RainbowScreenEffect.gdshader" id="27_4so5s"]
 [ext_resource type="Script" path="res://scenes/MainGame/CurrentWordDisplay.gd" id="28_2ckv8"]
-[ext_resource type="Script" path="res://scenes/RainbowEffect.gd" id="28_mbms7"]
+[ext_resource type="Script" path="res://scenes/MainGame/RainbowEffect.gd" id="28_mbms7"]
 
 [sub_resource type="Gradient" id="Gradient_vef6j"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -187,8 +187,8 @@ script = ExtResource("2_yfhgu")
 
 [node name="Character" parent="Play" instance=ExtResource("3_ts3qv")]
 unique_name_in_owner = true
-position = Vector2(64, 421.774)
-frame = 5
+position = Vector2(64, 331.812)
+frame = 4
 
 [node name="Spawner" type="Node2D" parent="Play"]
 unique_name_in_owner = true
@@ -380,6 +380,7 @@ script = ExtResource("28_2ckv8")
 
 [node name="GameOverPanel" type="PanelContainer" parent="HUD"]
 unique_name_in_owner = true
+visible = false
 use_parent_material = true
 layout_mode = 1
 anchors_preset = 8

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Shane's Fishing Adventure"
-run/main_scene="res://scenes/Play.tscn"
+run/main_scene="res://scenes/MainGame/Play.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 

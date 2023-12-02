@@ -25,7 +25,7 @@ func spawn_fishes() -> void:
 	var log_depth: int = int(log(depth) / log(2))
 	
 	var range_of_spawning_patterns: int = clamp(log_depth, 1, size_spawning_patterns) 
-	print_debug("range of spawning patterns: " + str(range_of_spawning_patterns))
+	# print_debug("range of spawning patterns: " + str(range_of_spawning_patterns))
 
 	var spawning_pattern: Resource = spawning_patterns[randi() % (range_of_spawning_patterns)]
 	var num_of_fishes: int = spawning_pattern.fish_types.size()
@@ -78,7 +78,7 @@ func _on_spawn_timer_timeout():
 func enter_state(next_state: SpawnerState) -> void:
 	exit_state(current_state)
 	current_state = SpawnerState.TRANSITIONING
-	print_debug("Transitioning to state: " + SpawnerState.keys()[next_state])
+	# print_debug("Transitioning to state: " + SpawnerState.keys()[next_state])
 	match next_state:
 		SpawnerState.SPAWNER_NORMAL:
 			%SpawnTimer.start()
@@ -87,8 +87,8 @@ func enter_state(next_state: SpawnerState) -> void:
 				var fish_component: Fish = fish.get_node_or_null("Fish")
 				if fish_component:
 					fish_component.enter_state(Fish.FishState.FISH_INACTIVE)
-			print_debug("Waiting for fishes to be gone...")
-			print_debug("Done waiting! Spawning mermaid!")
+			# print_debug("Waiting for fishes to be gone...")
+			# print_debug("Done waiting! Spawning mermaid!")
 			spawn_mermaid()
 		SpawnerState.SPAWNER_GAME_OVER:
 			for fish in get_tree().get_nodes_in_group(FISHES_GROUP):
@@ -98,11 +98,11 @@ func enter_state(next_state: SpawnerState) -> void:
 		_:
 			pass
 	current_state = next_state
-	print_debug("Entered state: " + SpawnerState.keys()[current_state])
+	# print_debug("Entered state: " + SpawnerState.keys()[current_state])
 	return
 
 func exit_state(exiting_state: SpawnerState) -> void:
-	print_debug("Exiting spawner state: " + SpawnerState.keys()[exiting_state])
+	# print_debug("Exiting spawner state: " + SpawnerState.keys()[exiting_state])
 	match exiting_state:
 		SpawnerState.SPAWNER_NORMAL:
 			%SpawnTimer.stop()
@@ -113,9 +113,9 @@ func exit_state(exiting_state: SpawnerState) -> void:
 func _on_active_fishes_reduced(node: Node) -> void:
 	if not (node is Mermaid):
 		var is_last_fish_captured_or_escaped: bool = %ActiveFishes.get_child_count() - 1 <= 0 # Subtract by 1 since `child_exiting_tree` emits BEFORE the node exits the tree.
-		print_debug("Number of active fishes: " + str(%ActiveFishes.get_child_count() - 1))
+		# print_debug("Number of active fishes: " + str(%ActiveFishes.get_child_count() - 1))
 		if is_last_fish_captured_or_escaped: 
-			print_debug("No more fishes!")
+			# print_debug("No more fishes!")
 			no_more_fishes.emit()
 		return
 

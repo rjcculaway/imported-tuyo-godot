@@ -7,7 +7,7 @@ func _on_play_lives_changed(lives: int):
 
 	var difference: int = children.size() - lives
 
-	print_debug(difference)
+	# print_debug(difference)
 
 	# Make up for the difference either by adding hearts or removing them.
 	if difference < 0:

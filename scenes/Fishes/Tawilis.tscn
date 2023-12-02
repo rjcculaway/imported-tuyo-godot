@@ -24,7 +24,6 @@ sprite_speed = 0.25
 
 [node name="Sprite2D" parent="Fish" index="0"]
 texture = ExtResource("2_qpsyh")
-frame = 1
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Fish/Sprite2D" index="0"]
 modulate = Color(1, 1, 1, 0)

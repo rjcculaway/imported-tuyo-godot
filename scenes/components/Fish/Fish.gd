@@ -38,7 +38,7 @@ var current_state: FishState
 func enter_state(next_state: FishState) -> void:
 	exit_state(current_state)
 	current_state = FishState.TRANSITIONING
-	print_debug("Transitioning to state: " + FishState.keys()[next_state])
+	# print_debug("Transitioning to state: " + FishState.keys()[next_state])
 	match next_state:
 		FishState.FISH_NORMAL:
 			$FishAnimationTree["parameters/TimeScale/scale"] = sprite_speed
@@ -53,11 +53,11 @@ func enter_state(next_state: FishState) -> void:
 		_:
 			return
 	current_state = next_state
-	print_debug("Entered state: " + FishState.keys()[current_state])
+	# print_debug("Entered state: " + FishState.keys()[current_state])
 	return
 
 func exit_state(exiting_state: FishState) -> void:
-	print_debug("Exiting fish state: " + FishState.keys()[exiting_state])
+	# print_debug("Exiting fish state: " + FishState.keys()[exiting_state])
 	match exiting_state:
 		FishState.FISH_NORMAL:
 			$FishAnimationTree["parameters/TimeScale/scale"] = 1.0

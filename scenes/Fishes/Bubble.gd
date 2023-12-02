@@ -22,10 +22,10 @@ func _on_typed_word_same():
 	%BubbleAnimationPlayer.stop()
 	bubble_popped.emit(true, bubble_score)
 	%BubbleAnimationPlayer.play(&"bubble_explode")
-	print_debug("Bubble was popped!")
+	# print_debug("Bubble was popped!")
 
 func _on_bubble_timeout():
 	%BubbleAnimationPlayer.stop()
 	bubble_popped.emit(false, bubble_score)
 	%BubbleAnimationPlayer.play(&"bubble_explode")
-	print_debug("Bubble failed to be popped!")
+	# print_debug("Bubble failed to be popped!")
