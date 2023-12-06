@@ -7,13 +7,15 @@ Godot port of Shane's Fishing Adventure, originally written in Java/JavaFX. You 
 ## Fishing
 Help us fish for goldfish, tilapia, and tawilis!
 If you see fish approaching, simply type the word on them to catch them! Matching words are highlighted in yellow. If a fish gets past you, you lose one (1) life! If you lose all three (3) lives, the game will end.
+
 ## Fish Net
-
 As you catch fish, you will gain fish net power. Once it fills, press SPACE to capture all of the fish present.
-## Correcting Mistakes
 
+## Correcting Mistakes
 You can correct your mistakes by pressing TAB. Beware! This eats at your fish net power.
 
 ## Mermaid
-
 At certain points in the game, a magical mermaid will appear! The mermaid will bless you with bubbles, which provide a substantial increase to your fish net power and score. Be sure to catch them all!
+
+## Credits
+I'd like to thank my friends [JC](https://github.com/jfangeles2) and [Shane](https://github.com/Palicpic) for making the original game with me!
